@@ -36,7 +36,7 @@ $(document).ready(function() {
         $('#texts').empty();
         const texts = snapshot.val();
         for (const id in texts) {
-            $('#texts').prepend(`<div class="text"><div class="content"><p class="id">${i}: ${texts[id].author}</p><p class="message">${texts[id].message}</p></div><hr></div>`);
+            $('#texts').prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${texts[id].author}</p><p class="message">${texts[id].message}</p></div><hr></div>`);
             i++;
         }
     });
