@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js'
-import { getDatabase, ref, set, get, onValue, push } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'
+import { getDatabase, ref, set, onValue, push } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js'
 
 const firebaseConfig = {
     databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com",
@@ -9,12 +9,17 @@ const app = initializeApp(firebaseConfig);
 
 const database = getDatabase(app);
 
-let thread = "";
+let threadparam = "";
+let textparam = "";
 
 const searchParams = new URLSearchParams(window.location.search)
 if (searchParams.has("t")) {
-    thread = searchParams.get("t");
-    console.log(thread);
+    threadparam = searchParams.get("t");
+    console.log(threadparam);
+}
+if (searchParams.has("x")) {
+    textparam = searchParams.get("x");
+    console.log(textparam);
 }
 
 $("#send_button").on("click", function() {
