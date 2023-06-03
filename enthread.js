@@ -1,17 +1,22 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"
-import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import {
+    getDatabase,
+    ref,
+    set,
+    onValue,
+    push
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const firebaseConfig = {
     databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com",
 };
-
 const app = initializeApp(firebaseConfig);
-
 const database = getDatabase(app);
 
 let threadparam = "";
 let textparam = "";
-
 const searchParams = new URLSearchParams(window.location.search)
 if (searchParams.has("t")) {
     threadparam = searchParams.get("t");
@@ -22,7 +27,7 @@ if (searchParams.has("x")) {
     console.log(textparam);
 }
 
-$("#send_button").on("click", function() {
+$("#send_button").on("click", function () {
     const author = document.getElementById("send_author").value;
     const message = document.getElementById("send_message").value;
     const newTextRef = push(ref(database, "texts"))
@@ -33,16 +38,15 @@ $("#send_button").on("click", function() {
     });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("head").append('<title>Enthread-Beta</title>')
     $("body").empty()
     $("body").append('<h1><p class="title"><a class="top" href="./">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2>')
 
     const dbRef = ref(database, "texts");
-
     onValue(dbRef, (snapshot) => {
-        let i = 0;
         $("#texts").empty();
+        let i = 0;
         const texts = snapshot.val();
         let text = "";
         let time = "";
