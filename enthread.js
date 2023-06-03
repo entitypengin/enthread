@@ -34,6 +34,9 @@ $("#send_button").on("click", function() {
 });
 
 $(document).ready(function() {
+    $("body").empty()
+    $("body").append('<h1><p class="title"><a class="top" href="./">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2>')
+
     const dbRef = ref(database, "texts");
 
     onValue(dbRef, (snapshot) => {
@@ -41,9 +44,11 @@ $(document).ready(function() {
         $("#texts").empty();
         const texts = snapshot.val();
         let text = "";
+        let time = "";
         for (const id in texts) {
             text = texts[id].message.replace("<", "&lt;").replace(">", "&gt;");
-            $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${texts[id].author}</p><p class="message">${text}</p></div><hr></div>`);
+            time = new Date(texts[id].timestamp).toISOString();
+            $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${texts[id].author} (${time})</p><p class="message">${text}</p></div><hr></div>`);
             i++;
         }
     });
