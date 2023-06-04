@@ -86,9 +86,9 @@ function updateTexts() {
 if (threadParam == "") {
     get(ref(database, "main_thread")).then((snapshot) => {
         threadParam = snapshot.val();
+        console.log(`threadParam: ${threadParam}`);
     });
 }
-console.log(`threadParam: ${threadParam}`);
 
 const threadRef = ref(database, `threads/${threadParam}`);
 
