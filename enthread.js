@@ -61,8 +61,10 @@ if (threadParam == "") {
     });
 }
 
+const threadRef = ref(database, `threads/${threadParam}`);
+
 let text_ids = [];
-get(ref(database, `threads/${threadParam}`)).then((snapshot) => {
+get(threadRef).then((snapshot) => {
     if (snapshot.exists()) {
         text_ids = snapshot.val().texts;
     }
@@ -72,7 +74,7 @@ get(ref(database, `threads/${threadParam}`)).then((snapshot) => {
 
 get(textsRef).then((snapshot) => {
     if (snapshot.exists()) {
-        var val = snapshot.val();
+        var val = snapshot.val().texts;
         var texts = []
         for (var text_id in text_ids) {
             texts.push(val[text_id]);
@@ -96,8 +98,12 @@ get(textsRef).then((snapshot) => {
     console.error(error);
 });
 
+onValue(threadRef, (snapshot) => {
+    text_ids = snapshot.val().texts;
+});
+
 onValue(textsRef, (snapshot) => {
-    var val = snapshot.val();
+    var val = snapshot.val().texts;
     var texts = []
     for (var text_id in text_ids) {
         texts.push(val[text_id]);
