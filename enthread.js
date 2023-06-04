@@ -71,6 +71,7 @@ if (textParam != "") {
     var headH = $("header").outerHeight();
     var animeSpeed = 500;
     var target = $(`x${textParam}`);
+    console.log(target);
     var position;
     position = target.offset().top - headH;
     $("body,html").stop().animate({
