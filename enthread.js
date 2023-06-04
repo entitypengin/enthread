@@ -57,7 +57,7 @@ function setTexts(texts) {
 
 get(textsRef).then((snapshot) => {
     if (snapshot.exists()) {
-        setTexts(snapshot.val().texts);
+        setTexts(snapshot.val());
         try {
             if (textParam != "") {
                 var animeSpeed = 500;
