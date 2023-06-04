@@ -56,45 +56,52 @@ function setTexts(texts) {
 }
 
 function updateTexts() {
-    console.log(`text_ids: ${text_ids}`)
-    var val = get(textsRef).val().texts;
-    var texts = []
-    for (var text_id in text_ids) {
-        texts.push(val[text_id]);
-    }
-    setTexts(texts);
-    try {
-        if (textParam != "") {
-            var animeSpeed = 500;
-            var target = $(`#x${textParam}`);
-            var position;
-            position = target.offset().top;
-            $("body,html").stop().animate({
-                scrollTop: position
-            }, animeSpeed);
+    get(textsRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            var val = snapshot.val().texts;
+            var texts = []
+            for (var text_id in text_ids) {
+                texts.push(val[text_id]);
+            }
+            setTexts(texts);
+            try {
+                if (textParam != "") {
+                    var animeSpeed = 500;
+                    var target = $(`#x${textParam}`);
+                    var position;
+                    position = target.offset().top;
+                    $("body,html").stop().animate({
+                        scrollTop: position
+                    }, animeSpeed);
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-    } catch (error) {
+    }).catch((error) => {
         console.error(error);
-    }
+    });    
 }
 
 if (threadParam == "") {
-    var snapshot = get(ref(database, "main_thread"));
-    console.log(snapshot);
-    if (snapshot.exists()) {
+    get(ref(database, "main_thread")).then((snapshot) => {
         threadParam = snapshot.val();
-    }
+    });
 }
 console.log(`threadParam: ${threadParam}`);
 
 const threadRef = ref(database, `threads/${threadParam}`);
 
 let text_ids = [];
-var snapshot = get(threadRef)
-if (snapshot.exists()) {
-    text_ids = snapshot.val().texts;
-}
-updateTexts();
+get(threadRef).then((snapshot) => {
+    if (snapshot.exists()) {
+        text_ids = snapshot.val().texts;
+        console.log(`text_ids: ${text_ids}`);
+        updateTexts();
+    }
+}).catch((error) => {
+    console.error(error);
+});
 
 onValue(threadRef, (snapshot) => {
     text_ids = snapshot.val().texts;
