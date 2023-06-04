@@ -56,6 +56,7 @@ function setTexts(texts) {
 }
 
 function updateTexts() {
+    console.log(`text_ids: ${text_ids}`)
     get(textsRef).then((snapshot) => {
         if (snapshot.exists()) {
             var val = snapshot.val().texts;
@@ -88,6 +89,7 @@ if (threadParam == "") {
         threadParam = snapshot.val();
     });
 }
+console.log(`threadParam: ${threadParam}`);
 
 const threadRef = ref(database, `threads/${threadParam}`);
 
