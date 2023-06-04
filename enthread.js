@@ -27,6 +27,10 @@ if (searchParams.has("x")) {
     console.log(textparam);
 }
 
+$("head").append('<title>Enthread-Beta</title>')
+$("body").empty()
+$("body").append('<h1><p class="title"><a class="top" href="./">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2>')
+
 $("#send_button").on("click", function () {
     const author = document.getElementById("send_author").value;
     const message = document.getElementById("send_message").value;
@@ -39,10 +43,6 @@ $("#send_button").on("click", function () {
 });
 
 $(document).ready(function () {
-    $("head").append('<title>Enthread-Beta</title>')
-    $("body").empty()
-    $("body").append('<h1><p class="title"><a class="top" href="./">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2>')
-
     const dbRef = ref(database, "texts");
     onValue(dbRef, (snapshot) => {
         $("#texts").empty();
