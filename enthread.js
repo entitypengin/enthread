@@ -80,6 +80,6 @@ if (textParam != "") {
 }
 
 
-onValue(textsRef, (snapshot) => {
-    setTexts(snapshot.val());
-});
+// onValue(textsRef, (snapshot) => {
+//     setTexts(snapshot.val());
+// });
