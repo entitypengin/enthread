@@ -47,7 +47,7 @@ function setTexts(texts) {
     var i = 0;
     var text = "";
     var time = "";
-    for (const id in texts) {
+    for (var id in texts) {
         text = texts[id].message.replace("<", "&lt;").replace(">", "&gt;");
         time = new Date(texts[id].timestamp).toISOString();
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${texts[id].author} (${time})</p><p class="message">${text}</p></div><hr></div>`);
@@ -55,55 +55,27 @@ function setTexts(texts) {
     }
 }
 
-function updateTexts() {
-    get(textsRef).then((snapshot) => {
-        if (snapshot.exists()) {
-            var val = snapshot.val().texts;
-            var texts = []
-            for (var text_id in text_ids) {
-                texts.push(val[text_id]);
-            }
-            setTexts(texts);
-            try {
-                if (textParam != "") {
-                    var animeSpeed = 500;
-                    var target = $(`#x${textParam}`);
-                    var position;
-                    position = target.offset().top;
-                    $("body,html").stop().animate({
-                        scrollTop: position
-                    }, animeSpeed);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    }).catch((error) => {
-        console.error(error);
-    });    
-}
-
-if (threadParam == "") {
-    get(ref(database, "main_thread")).then((snapshot) => {
-        threadParam = snapshot.val();
-        console.log(`threadParam: ${threadParam}`);
-    });
-}
-
-const threadRef = ref(database, `threads/${threadParam}`);
-
-let text_ids = [];
-get(threadRef).then((snapshot) => {
+get(textsRef).then((snapshot) => {
     if (snapshot.exists()) {
-        text_ids = snapshot.val().texts;
-        console.log(`text_ids: ${text_ids}`);
-        updateTexts();
+        setTexts(snapshot.val().texts);
+        try {
+            if (textParam != "") {
+                var animeSpeed = 500;
+                var target = $(`#x${textParam}`);
+                var position;
+                position = target.offset().top;
+                $("body,html").stop().animate({
+                    scrollTop: position
+                }, animeSpeed);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 }).catch((error) => {
     console.error(error);
 });
 
-onValue(threadRef, (snapshot) => {
-    text_ids = snapshot.val().texts;
-    updateTexts();
+onValue(textsRef, (snapshot) => {
+    setTexts(snapshot.val());
 });
