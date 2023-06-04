@@ -80,6 +80,7 @@ function updateTexts() {
 
 if (threadParam == "") {
     var snapshot = get(ref(database, "main_thread"));
+    console.log(snapshot);
     if (snapshot.exists()) {
         threadParam = snapshot.val();
     }
