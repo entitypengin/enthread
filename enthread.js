@@ -79,13 +79,20 @@ function updateTexts() {
 }
 
 if (threadParam == "") {
-    threadParam = get(ref(database, "main_thread")).val();
+    var snapshot = get(ref(database, "main_thread"));
+    if (snapshot.exists()) {
+        threadParam = snapshot.val();
+    }
 }
 console.log(`threadParam: ${threadParam}`);
 
 const threadRef = ref(database, `threads/${threadParam}`);
 
-let text_ids = get(threadRef).val().texts;
+let text_ids = [];
+var snapshot = get(threadRef)
+if (snapshot.exists()) {
+    text_ids = snapshot.val().texts;
+}
 updateTexts();
 
 onValue(threadRef, (snapshot) => {
