@@ -22,11 +22,9 @@ let textParam = "";
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
-    console.log(threadParam);
 }
 if (searchParams.has("x")) {
     textParam = searchParams.get("x");
-    console.log(textParam);
 }
 
 document.title = "Enthread-Beta";
@@ -63,13 +61,12 @@ get(textsRef).then((snapshot) => {
         if (textParam != "") {
             var animeSpeed = 500;
             var target = $(`#x${textParam}`);
-            console.log($(`#x${textParam}`));
             var position;
             position = target.offset().top;
             $("body,html").stop().animate({
                 scrollTop: position
             }, animeSpeed);
-        }        
+        }
     } else {
         console.log("No data available");
     }
