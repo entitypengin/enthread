@@ -58,17 +58,19 @@ function setTexts(texts) {
 get(textsRef).then((snapshot) => {
     if (snapshot.exists()) {
         setTexts(snapshot.val());
-        if (textParam != "") {
-            var animeSpeed = 500;
-            var target = $(`#x${textParam}`);
-            var position;
-            position = target.offset().top;
-            $("body,html").stop().animate({
-                scrollTop: position
-            }, animeSpeed);
+        try {
+            if (textParam != "") {
+                var animeSpeed = 500;
+                var target = $(`#x${textParam}`);
+                var position;
+                position = target.offset().top;
+                $("body,html").stop().animate({
+                    scrollTop: position
+                }, animeSpeed);
+            }
+        } catch (error) {
+            console.error(error);
         }
-    } else {
-        console.log("No data available");
     }
 }).catch((error) => {
     console.error(error);
