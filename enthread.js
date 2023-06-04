@@ -44,9 +44,9 @@ $("#send_button").on("click", function () {
 
 function setTexts(texts) {
     $("#texts").empty();
-    let i = 0;
-    let text = "";
-    let time = "";
+    var i = 0;
+    var text = "";
+    var time = "";
     for (const id in texts) {
         text = texts[id].message.replace("<", "&lt;").replace(">", "&gt;");
         time = new Date(texts[id].timestamp).toISOString();
@@ -55,9 +55,29 @@ function setTexts(texts) {
     }
 }
 
+if (threadParam == "") {
+    get(ref(database, "main_thread")).then((snapshot) => {
+        threadParam = snapshot.val();
+    });
+}
+
+let text_ids = [];
+get(ref(database, `threads/${threadParam}`)).then((snapshot) => {
+    if (snapshot.exists()) {
+        text_ids = snapshot.val().texts;
+    }
+}).catch((error) => {
+    console.error(error);
+});
+
 get(textsRef).then((snapshot) => {
     if (snapshot.exists()) {
-        setTexts(snapshot.val());
+        var val = snapshot.val();
+        var texts = []
+        for (var text_id in text_ids) {
+            texts.push(val[text_id]);
+        }
+        setTexts(texts);
         try {
             if (textParam != "") {
                 var animeSpeed = 500;
