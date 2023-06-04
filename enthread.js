@@ -27,7 +27,7 @@ if (searchParams.has("x")) {
     console.log(textparam);
 }
 
-$("head").append('<title>Enthread-Beta</title>')
+document.title = "Enthread-Beta";
 $("body").empty()
 $("body").append('<h1><p class="title"><a class="top" href="./">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2>')
 
