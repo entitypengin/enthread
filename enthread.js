@@ -70,12 +70,12 @@ get(textsRef).then((snapshot) => {
 if (textParam != "") {
     var headH = $("header").outerHeight();
     var animeSpeed = 500;
-    var target = $(textParam);
+    var target = $(`x${textParam}`);
     var position;
     position = target.offset().top - headH;
     $("body,html").stop().animate({
         scrollTop: position
-    }, animeSpeed);    
+    }, animeSpeed);
 }
 
 
