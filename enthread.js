@@ -97,5 +97,10 @@ get(textsRef).then((snapshot) => {
 });
 
 onValue(textsRef, (snapshot) => {
-    setTexts(snapshot.val());
+    var val = snapshot.val();
+    var texts = []
+    for (var text_id in text_ids) {
+        texts.push(val[text_id]);
+    }
+    setTexts(texts);
 });
