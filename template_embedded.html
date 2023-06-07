@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            header {
+                display: flex;
+                width: 100%;
+                height: 100px;
+                background-color: white;
+                align-items: center;
+                position: fixed;
+            }
+            p.title {
+                font-family: system-ui;
+                font-size: 150%;
+            }
+            hr {
+                color: white;
+            }
+            a:link {
+                color: #0A0;
+                text-decoration: underline;
+            }
+            a:hover {
+                color: #AA0;
+                text-decoration: underline;
+            }
+            a:visited {
+                color: #A00;
+                text-decoration: underline;
+            }
+            a:active {
+                color: #A0A;
+                text-decoration: underline;
+            }
+            a.top:link,a.top:visited {
+                color: white;
+                text-decoration: none;
+            }
+            a.top:hover {
+                color: #AAA;
+                text-decoration: underline;
+            }
+            a.top:active {
+                color: #555;
+                text-decoration: underline;
+            }
+            body {
+                text-align: center;
+                font-family: system-ui;
+                font-size: 100%;
+                background-color: black;
+                color: white;
+                width: 80%;
+                margin: 0 auto;
+                max-width: 500px;
+            }
+            #title {
+                font-family: system-ui;
+                font-size: 150%;
+            }
+            #texts {
+                text-align: left;
+                font-size: 75%;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="module">
+            import {
+                initializeApp
+            } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+            import {
+                getDatabase,
+                ref,
+                set,
+                onValue,
+                get,
+                push
+            } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+            const firebaseConfig = {
+                databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com",
+            };
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
+            const textsRef = ref(database, "texts");
+
+            let threadParam = "";
+            let textParam = "";
+            const searchParams = new URLSearchParams(location.search);
+            if (searchParams.has("t")) {
+                threadParam = searchParams.get("t");
+            }
+            if (searchParams.has("x")) {
+                textParam = searchParams.get("x");
+            }
+
+            document.title = "Enthread-Beta";
+            $("body").empty();
+            $("body").append(`<h1>
+                <p class="title">
+                    <a class="top" href="./">EnthreadBeta</a>
+                </p>
+            </h1>
+            <h2>
+                <div id="send">
+                    <textarea id="send_author"></textarea>
+                    <textarea id="send_message"></textarea>
+                    <button id="send_button">SEND</button>
+                    <hr>
+                </div>
+                <div id="texts"></div>
+            </h2>
+            <h2>
+                <a href="https://github.com/entitypengin/enthread">Github</a>
+            </h2>`);
+
+            $("#send_button").on("click", function () {
+                const author = document.getElementById("send_author").value;
+                const message = document.getElementById("send_message").value;
+                const newTextRef = push(textsRef)
+                set(newTextRef, {
+                    author: author,
+                    message: message,
+                    timestamp: Date.now()
+                });
+            });
+
+            function setTexts(texts) {
+                $("#texts").empty();
+                var i = 0;
+                var text = "";
+                var time = "";
+                for (var id in texts) {
+                    text = texts[id].message.replace("<", "&lt;").replace(">", "&gt;");
+                    time = new Date(texts[id].timestamp).toISOString();
+                    $("#texts").prepend(`<div id="x${i}" class="text">
+                <div class="content">
+                    <p class="id">${i}: ${texts[id].author} (${time})</p>
+                    <p class="message">${text}</p>
+                </div>
+                <hr>
+            </div>`);
+                    i++;
+                }
+            }
+
+            get(textsRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    setTexts(snapshot.val());
+                    try {
+                        if (textParam != "") {
+                            var animeSpeed = 500;
+                            var target = $(`#x${textParam}`);
+                            var position;
+                            position = target.offset().top;
+                            $("body,html").stop().animate({
+                                scrollTop: position
+                            }, animeSpeed);
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+
+            onValue(textsRef, (snapshot) => {
+                setTexts(snapshot.val());
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
