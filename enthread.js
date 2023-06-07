@@ -66,7 +66,7 @@ function setTexts(texts) {
     var time = "";
     for (var id in texts) {
         author = texts[id].author.replace("<", "&lt;").replace(">", "&gt;");
-        message = texts[id].message.replace("<", "&lt;").replace(">", "&gt;").replace(new RegExp("^([a-zA-Z]+:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i"), (str) => {
+        message = texts[id].message.replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>").replace(new RegExp("^([a-zA-Z]+:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i"), (str) => {
             return `<a href="${str}">${str}</a>`;
         }).replace(/#\d*/, (str) => {
             return `<a href="./?x=${str.slice(1)}">${str}</a>`;
