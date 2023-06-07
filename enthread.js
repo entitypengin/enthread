@@ -24,7 +24,7 @@ if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
 }
 if (searchParams.has("x")) {
-    threadParam = searchParams.get("x");
+    textParam = searchParams.get("x");
 }
 
 document.title = "Enthread-Beta";
