@@ -18,10 +18,13 @@ const database = getDatabase(app);
 const textsRef = ref(database, "texts");
 
 let threadParam = "";
-let textParam = location.hash;
+let textParam = "";
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
+}
+if (searchParams.has("x")) {
+    threadParam = searchParams.get("x");
 }
 
 document.title = "Enthread-Beta";
@@ -66,7 +69,7 @@ function setTexts(texts) {
         message = texts[id].message.replace("<", "&lt;").replace(">", "&gt;").replace(new RegExp("^([a-zA-Z]+:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i"), (str) => {
             return `<a href="${str}">${str}</a>`;
         }).replace(/#\d*/, (str) => {
-            return `<a href="./#${str.slice(1)}">${str}</a>`;
+            return `<a href="./?x=${str.slice(1)}">${str}</a>`;
         });
         time = new Date(texts[id].timestamp).toISOString();
         $("#texts").prepend(`<div id="x${i}" class="text">
