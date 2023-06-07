@@ -18,13 +18,10 @@ const database = getDatabase(app);
 const textsRef = ref(database, "texts");
 
 let threadParam = "";
-let textParam = "";
+let textParam = location.hash;
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
-}
-if (searchParams.has("x")) {
-    textParam = searchParams.get("x");
 }
 
 document.title = "Enthread-Beta";
@@ -61,19 +58,21 @@ $("#send_button").on("click", function () {
 function setTexts(texts) {
     $("#texts").empty();
     var i = 0;
-    var text = "";
+    var author = "";
+    var message = "";
     var time = "";
     for (var id in texts) {
-        text = texts[id].message.replace("<", "&lt;").replace(">", "&gt;").replace(new RegExp("^([a-zA-Z]+:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i"), (str) => {
+        author = texts[id].author.replace("<", "&lt;").replace(">", "&gt;");
+        message = texts[id].message.replace("<", "&lt;").replace(">", "&gt;").replace(new RegExp("^([a-zA-Z]+:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i"), (str) => {
             return `<a href="${str}">${str}</a>`;
         }).replace(/#\d*/, (str) => {
-            return `<a href="./?x=${str.slice(1)}">${str}</a>`;
+            return `<a href="./#${str.slice(1)}">${str}</a>`;
         });
         time = new Date(texts[id].timestamp).toISOString();
         $("#texts").prepend(`<div id="x${i}" class="text">
     <div class="content">
-        <p class="id">${i}: ${texts[id].author} (${time})</p>
-        <p class="message">${text}</p>
+        <p class="id">${i}: ${author} (${time})</p>
+        <p class="message">${message}</p>
     </div>
     <hr>
 </div>`);
