@@ -48,12 +48,11 @@ $("body").append(`<h1>
 </h2>`);
 
 $("#send_button").on("click", function () {
-    const author = document.getElementById("send_author").value;
-    const message = document.getElementById("send_message").value;
     const newTextRef = push(textsRef)
     set(newTextRef, {
-        author: author,
-        message: message,
+        author: document.getElementById("send_author").value,
+        message: document.getElementById("send_message").value,
+        host: location.hostname,
         timestamp: Date.now()
     });
 });
@@ -63,6 +62,7 @@ function setTexts(texts) {
     var i = 0;
     var author = "";
     var message = "";
+    var host = "";
     var time = "";
     for (var id in texts) {
         author = texts[id].author.replace(/</g, "&lt;").replace(/</g, "&gt;");
@@ -71,10 +71,11 @@ function setTexts(texts) {
         }).replace(/#\d*/g, (str) => {
             return `<a href="./?x=${str.slice(1)}">${str}</a>`;
         });
+        host = texts[id].host;
         time = new Date(texts[id].timestamp).toISOString();
         $("#texts").prepend(`<div id="x${i}" class="text">
     <div class="content">
-        <p class="id">${i}: ${author} (${time})</p>
+        <p class="id">${i}: ${author} (${host}, ${time})</p>
         <p class="message">${message}</p>
     </div>
     <hr>
