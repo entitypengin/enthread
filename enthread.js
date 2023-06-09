@@ -29,7 +29,7 @@ if (searchParams.has("x")) {
 
 document.title = "Enthread-Beta";
 $("body").empty();
-$("body").append('<h1><p class="title"><a class="top" href="?">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2><h2><a href="https://github.com/entitypengin/enthread">Github</a></h2>');
+$("body").append('<h1><p class="title"><a class="top" href="">EnthreadBeta</a></p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2><h2><a href="https://github.com/entitypengin/enthread">Github</a></h2>');
 
 $("#send_button").on("click", function () {
     const newTextRef = push(textsRef)
