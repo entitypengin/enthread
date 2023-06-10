@@ -25,15 +25,15 @@
                 text-decoration: underline;
             }
             a:hover {
-                color: #AA0;
+                color: #0AA;
                 text-decoration: underline;
             }
             a:visited {
-                color: #A00;
+                color: #A0A;
                 text-decoration: underline;
             }
             a:active {
-                color: #A0A;
+                color: #AA0;
                 text-decoration: underline;
             }
             a.top:link,a.top:visited {
@@ -62,9 +62,69 @@
                 font-family: system-ui;
                 font-size: 150%;
             }
+            #send {
+                text-align: left;
+                font-size: 50%;
+            }
+            textarea {
+                font-family: system-ui;
+                border: 2px solid #AAA;
+                padding: 0;
+                background-color: black;
+                color: white;
+                resize: vertical;
+                width: 500px;
+            }
+            ::placeholder {
+                color: #AAA;
+            }
+            textarea:hover {
+                border: 2px solid #0AA;
+                outline: 0;
+            }
+            textarea:focus {
+                border: 2px solid #AA0;
+                outline: 0;
+            }
+            input {
+                font-family: system-ui;
+                padding: 0;
+                border: none;
+                background-color: black;
+                color: white;
+            }
+            ::placeholder {
+                color: #AAA;
+            }
+            input[type="text"] {
+                border-bottom: 2px solid #AAA;
+            }
+            input[type="text"]:hover {
+                border-bottom: 2px solid #0AA;
+            }
+            input[type="text"]:focus {
+                border-bottom: 2px solid #AA0;
+                outline: 0;
+            }
+            #button {
+                text-align: right;
+            }
+            input[type="button"] {
+                color: #AAA;
+                border: none;
+                border-bottom: 2px solid #AAA;
+            }
+            input[type="button"]:hover {
+                color: #0AA;
+                border-bottom: 2px solid #0AA;
+            }
+            input[type="button"]:active {
+                color: #AA0;
+                border-bottom: 2px solid #AA0;
+            }
             #texts {
                 text-align: left;
-                font-size: 75%;
+                font-size: 50%;
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -100,7 +160,7 @@
 
             document.title = "Enthread-Beta";
             $("body").empty();
-            $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p><p>${location.hostname}</p></h1><h2><div id="send"><textarea id="send_author"></textarea><textarea id="send_message"></textarea><button id="send_button">SEND</button><hr></div><div id="texts"></div></h2><h2><a href="https://github.com/entitypengin/enthread">Github</a></h2>`);
+            $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr><div id="send" class="text"><p class="id"><span id="length"></span>: <input type="text" id="send_author" placeholder="Your name">(${location.hostname}, time)</p><p class="message"><textarea id="send_message" placeholder="Your message"></textarea></p><p id="button"><input type="button" id="send_button" value="SEND"></p><hr></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
             $("#send_button").on("click", function () {
                 const newTextRef = push(textsRef)
@@ -133,6 +193,7 @@
                     $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr></div>`);
                     i++;
                 }
+                $("#length").text(`${i}`);
             }
 
             get(textsRef).then((snapshot) => {
