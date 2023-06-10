@@ -49,9 +49,7 @@ $("#send_button").on("click", function () {
     });
 });
 
-setInterval(() => {
-    $("#time").text(timeFormat(new Date()));
-}, 1000);
+setInterval(() => $("#time").text(timeFormat(new Date())), 1000);
 
 function setTexts(texts) {
     $("#texts").empty();
