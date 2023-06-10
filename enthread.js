@@ -69,7 +69,7 @@ function setTexts(texts) {
         }).replace(/#\d+/g, (str) => {
             return `<a href="?x=${str.slice(1)}">${str}</a>`;
         });
-        host = replaceToLink(texts[id].host);
+        host = replaceToLink(`${texts[id].host}`);
         time = timeFormat(new Date(texts[id].timestamp));
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr></div>`);
         i++;
