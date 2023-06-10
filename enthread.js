@@ -29,7 +29,7 @@ if (searchParams.has("x")) {
 
 document.title = "Enthread-Beta";
 $("body").empty();
-$("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><div>${location.hostname}</div><hr><div id="send" class="text"><p class="id"><span id="length"></span>: <input type="text" id="send_author"></p><p class="message"><textarea id="send_message"></textarea><input type="button" id="send_button" value="SEND"></p><hr></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
+$("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><div>${location.hostname}</div><hr><div id="send" class="text"><p class="id"><span id="length"></span>: <input type="text" id="send_author" placeholder="Your name"></p><p class="message"><textarea id="send_message" placeholder="Your message"></textarea><input type="button" id="send_button" value="SEND"></p><hr></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
 $("#send_button").on("click", function () {
     const newTextRef = push(textsRef)
