@@ -46,7 +46,7 @@ function timeFormat(date) {
 }
 
 setInterval(() => {
-    $("#time").text(timeFormat(Date.now()));
+    $("#time").text(timeFormat(new Date()));
 }, 1);
 
 function setTexts(texts) {
