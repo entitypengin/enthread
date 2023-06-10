@@ -39,8 +39,8 @@ document.title = "Enthread-Beta";
 $("body").empty();
 $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><p class="message"><textarea id="send_message" placeholder="Your message"></textarea></p><p id="button"><input type="button" id="send_button" value="SEND"></p><hr></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
-$("#send_button").on("click", function () {
-    const newTextRef = push(textsRef)
+$("#send_button").on("click", () => {
+    const newTextRef = push(textsRef);
     set(newTextRef, {
         author: document.getElementById("send_author").value,
         message: document.getElementById("send_message").value,
@@ -69,7 +69,7 @@ function setTexts(texts) {
     $("#length").text(`${i}`);
 }
 
-get(textsRef).then((snapshot) => {
+get(textsRef).then(snapshot => {
     if (snapshot.exists()) {
         setTexts(snapshot.val());
         try {
@@ -86,10 +86,6 @@ get(textsRef).then((snapshot) => {
             console.error(error);
         }
     }
-}).catch((error) => {
-    console.error(error);
-});
+}).catch(error => console.error(error));
 
-onValue(textsRef, (snapshot) => {
-    setTexts(snapshot.val());
-});
+onValue(textsRef, snapshot => setTexts(snapshot.val()));
