@@ -37,7 +37,7 @@ function replaceToLink(str) {
 
 document.title = "Enthread-Beta";
 $("body").empty();
-$("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr noshade><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><div class="areas"><div class="area active"><textarea id="send_message" placeholder="Your message"></textarea></div><div class="area">FILE</div></div><div class="buttons flex-box-between"><div class="button"></div><div class="button"><input type="button" id="send_button" value="SEND"></div></div><hr noshade></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
+$("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr noshade><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><div class="areas"><div class="area active"><textarea id="send_message" placeholder="Your message"></textarea></div><div class="area"><input type="file"></div></div><div class="buttons flex-box-between"><div class="button"></div><div class="button"><input type="button" id="send_button" value="SEND"></div></div><hr noshade></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
 $("#send_button").on("click", () => {
     const newTextRef = push(textsRef);
