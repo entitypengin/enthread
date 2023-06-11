@@ -88,7 +88,7 @@ $("#send_button").on("click", () => {
         file = document.getElementById("send_file");
         mime_type = file.type;
     }
-    sendText(document.getElementById("send_author").value, document.getElementById("send_message").value, file, mime_type);
+    sendText(document.getElementById("send_author").value, document.getElementById("send_message").value, file, "image/jpeg");
 });
 
 setInterval(() => $("#time").text(timeFormat(new Date())), 1000);
