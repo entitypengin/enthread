@@ -35,7 +35,7 @@ function replaceToLink(str) {
     return str.replace(/([a-zA-Z]+:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?/ig, str => `<a href="https://${str}">${str}</a>`);
 }
 
-function ToBase64(file, mime_type) {
+function ToBase64(file) {
     const reader = new FileReader()
     reader.onload = (event) => {
         return event.currentTarget.result;
@@ -46,7 +46,7 @@ function ToBase64(file, mime_type) {
 function sendText(author, message, file=null, mime_type=null) {
     var encoded = "";
     if (file !== null && mime_type !== null) {
-        encoded = `!!${mime_type}:${ImageToBase64(file, mime_type)}`
+        encoded = `!!${mime_type}:${ToBase64(file)}`
     }
 
     const newTextRef = push(textsRef);
