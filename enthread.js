@@ -36,6 +36,7 @@ function replaceToLink(str) {
 }
 
 function ImageToBase64(img, mime_type) {
+    console.log(typeof img);
     var canvas = document.createElement('canvas');
     canvas.width  = img.width;
     canvas.height = img.height;
