@@ -49,7 +49,6 @@ function ImageToBase64(img, mime_type) {
 function sendText(author, message, file=null, mime_type=null) {
     var encoded = "";
     if (file !== null && mime_type !== null) {
-        console.log(typeof file);
         encoded = `!!${mime_type}:${ImageToBase64(file, mime_type)}`
     }
 
@@ -86,6 +85,7 @@ $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}
 
 $("#send_button").on("click", () => {
     var file = document.getElementById("send_file");
+    console.log(`file: ${typeof(file)}, file.files[0]: ${file.files[0]}`);
     var mime_type = null;
     if (file.files.length != 0) {
         mime_type = file.files[0].type;
