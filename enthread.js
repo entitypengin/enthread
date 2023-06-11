@@ -36,7 +36,6 @@ function replaceToLink(str) {
 }
 
 function ImageToBase64(img, mime_type) {
-    console.log(typeof img);
     var canvas = document.createElement('canvas');
     canvas.width  = img.width;
     canvas.height = img.height;
@@ -50,6 +49,7 @@ function ImageToBase64(img, mime_type) {
 function sendText(author, message, file=null, mime_type=null) {
     var encoded = "";
     if (file !== null && mime_type !== null) {
+        console.log(typeof file);
         encoded = `!!${mime_type}:${ImageToBase64(file, mime_type)}`
     }
 
