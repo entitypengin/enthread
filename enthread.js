@@ -85,7 +85,7 @@ $("#send_button").on("click", () => {
     var file = null;
     var mime_type = null;
     if (document.getElementById("send_file").files.length != 0) {
-        file = document.getElementById("send_file").files[0];
+        file = document.getElementById("send_file");
         mime_type = file.type;
     }
     sendText(document.getElementById("send_author").value, document.getElementById("send_message").value, file, mime_type);
