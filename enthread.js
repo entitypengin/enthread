@@ -35,13 +35,12 @@ function replaceToLink(str) {
     return str.replace(/([a-zA-Z]+:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?/ig, str => `<a href="https://${str}">${str}</a>`);
 }
 
-function ImageToBase64(img, mime_type) {
-    var canvas = document.createElement("canvas");
-    canvas.width  = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    return canvas.toDataURL(mime_type);
+function ToBase64(file, mime_type) {
+    const reader = new FileReader()
+    reader.onload = (event) => {
+        return event.currentTarget.result;
+    }
+    return reader.readAsDataURL(file);
 }
 
 function sendText(author, message, file=null, mime_type=null) {
