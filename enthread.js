@@ -49,16 +49,16 @@ function ImageToBase64(img, mime_type) {
 }
 
 function sendText(author, message, file=null, mime_type=null) {
-    var encoded = "";
-    if (file !== null && mime_type !== null) {
-        console.log(typeof(file));
-        encoded = `!!${mime_type}:${ImageToBase64(file, mime_type)}`
-    }
+    // var encoded = "";
+    // if (file !== null && mime_type !== null) {
+    //     console.log(typeof(file));
+    //     encoded = `!!${mime_type}:${ImageToBase64(file, mime_type)}`
+    // }
 
     const newTextRef = push(textsRef);
     set(newTextRef, {
         author: author,
-        message: message + encoded,
+        message: message /* + encoded */,
         host: location.hostname,
         timestamp: Date.now()
     });
