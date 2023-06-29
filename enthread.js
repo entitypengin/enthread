@@ -11,7 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const firebaseConfig = {
-    databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com",
+    databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com/",
 };
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
