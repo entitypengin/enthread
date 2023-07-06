@@ -63,7 +63,7 @@ function setTexts(texts) {
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr noshade></div>`);
         i++;
     }
-    document.getElementById("length").text(`${i}`);
+    $("#length").text(`${i}`);
 }
 
 document.title = "Enthread-Beta";
