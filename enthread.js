@@ -46,7 +46,7 @@ function sendText(author, message) {
 }
 
 function setTexts(texts) {
-    document.getElementById("texts").empty();
+    $("#texts").empty();
     var i = 0;
     var author = "";
     var message = "";
@@ -60,7 +60,7 @@ function setTexts(texts) {
         if (message == "!!l") {
             message = "Show...";
         }
-        document.getElementById("texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr noshade></div>`);
+        $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr noshade></div>`);
         i++;
     }
     document.getElementById("length").text(`${i}`);
@@ -71,12 +71,7 @@ $("body").empty();
 $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr noshade><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><div class="areas"><div><textarea id="send_message" placeholder="Your message"></textarea></div></div><div class="buttons flex-box-between"><div class="button"><input type="file" id="send_file"></div><div class="button"><input type="button" id="send_button" value="SEND"></div></div><hr noshade></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
 $("#send_button").on("click", () => {
-    var file = document.getElementById("send_file");
-    var mime_type = null;
-    if (file.files.length != 0) {
-        mime_type = file.files[0].type;
-    }
-    sendText(document.getElementById("send_author").value, document.getElementById("send_message").value, file, "image/jpeg");
+    sendText(document.getElementById("send_author").value, document.getElementById("send_message").value);
 });
 
 setInterval(() => $("#time").text(timeFormat(new Date())), 1000);
