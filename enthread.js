@@ -1,3 +1,6 @@
+import jQuery from "jquery";
+window.$ = window.jQuery = jQuery;
+
 import {
     initializeApp
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
