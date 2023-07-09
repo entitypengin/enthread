@@ -37,12 +37,23 @@ function replaceToLink(str) {
 
 function sendText(author, message) {
     const newTextRef = push(textsRef);
-    set(newTextRef, {
-        author: author,
-        message: message,
-        host: location.hostname,
-        timestamp: Date.now()
-    });
+    if (message.length < 200) {
+        set(newTextRef, {
+            author: author,
+            message: message,
+            host: location.hostname,
+            timestamp: Date.now()
+        });
+    } else {
+        const longRef = ref(database, `long/${newTextRef.key}`);
+        set(newTextRef, {
+            author: author,
+            message: "!!l",
+            host: location.hostname,
+            timestamp: Date.now()
+        });
+        set(longRef, message);
+    }
 }
 
 function setTexts(texts) {
