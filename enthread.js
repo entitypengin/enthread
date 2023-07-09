@@ -67,9 +67,9 @@ function setTexts(texts) {
     $("#length").text(`${i}`);
 }
 
-function openText(html_id, message_id) {
-    console.log(message_id);
-    $(`#message_x${html_id}`).text("Shown");
+function openText(e) {
+    console.log(e.data.message_id);
+    $(`#message_x${e.data.html_id}`).text("Shown");
 }
 
 document.title = "Enthread-Beta";
