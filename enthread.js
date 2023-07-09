@@ -83,7 +83,7 @@ $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}
 
 $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
 
-setInterval(() => $("#time").text(timeFormat(new Date())), 1000);
+setInterval(() => $("#time").text(formatTime(new Date())), 1000);
 
 get(textsRef).then(snapshot => {
     if (snapshot.exists()) {
