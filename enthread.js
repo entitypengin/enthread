@@ -27,7 +27,7 @@ if (searchParams.has("x")) {
     textParam = searchParams.get("x");
 }
 
-function timeFormat(date) {
+function formatTime(date) {
     return `${("0000" + date.getUTCFullYear()).slice(-4)}-${("00" + date.getUTCMonth()).slice(-2)}-${("00" + date.getUTCDate()).slice(-2)} ${("00" + date.getUTCHours()).slice(-2)}:${("00" + date.getUTCMinutes()).slice(-2)}:${("00" + date.getUTCSeconds()).slice(-2)}`;
 }
 
@@ -56,7 +56,7 @@ function setTexts(texts) {
         author = texts[id].author.replace(/</g, "&lt;").replace(/</g, "&gt;");
         message = texts[id].message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/([a-zA-Z]+:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?/ig, str => `<a href="${str}">${str}</a>`).replace(/#\d+/g, str => `<a href="?x=${str.slice(1)}">${str}</a>`);
         host = replaceToLink(`${texts[id].host}`);
-        time = timeFormat(new Date(texts[id].timestamp));
+        time = formatTime(new Date(texts[id].timestamp));
         if (message == "!!l") {
             message = `<input type="button" id="button_x${i}" value="Show...">`;
         }
@@ -69,16 +69,19 @@ function setTexts(texts) {
 
 function openText(e) {
     console.log(e.data.message_id);
-    $(`#message_x${e.data.html_id}`).text("Shown");
+    const longRef = ref(database, `long/${e.data.message_id}`);
+    get(longRef).then(snapshot => {
+        if (snapshot.exists()) {
+            $(`#message_x${e.data.html_id}`).text(snapshot.val());
+        }
+    }).catch(error => console.error(error));    
 }
 
 document.title = "Enthread-Beta";
 $("body").empty();
 $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}">EnthreadBeta</a></p></h1><h2><hr noshade><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><div class="areas"><div><textarea id="send_message" placeholder="Your message"></textarea></div></div><div class="buttons flex-box-between"><div class="button"><input type="file" id="send_file"></div><div class="button"><input type="button" id="send_button" value="SEND"></div></div><hr noshade></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
 
-$("#send_button").on("click", () => {
-    sendText($("#send_author").val(), $("#send_message").val());
-});
+$("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
 
 setInterval(() => $("#time").text(timeFormat(new Date())), 1000);
 
