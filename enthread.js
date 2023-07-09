@@ -62,6 +62,7 @@ function setTexts(texts) {
         }
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
         $(`#button_x${i}`).on("click", () => {
+            console.log(`#button_x${i}`, `#message_x${i}`);
             $(`#message_x${i}`).text("Shown");
         });
         i++;
