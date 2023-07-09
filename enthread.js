@@ -58,7 +58,7 @@ function setTexts(texts) {
         host = replaceToLink(`${texts[id].host}`);
         time = timeFormat(new Date(texts[id].timestamp));
         if (message == "!!l") {
-            message = "Show...";
+            message = `<input type="button" id="button_x${i}" value="Show...">`;
         }
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr noshade></div>`);
         i++;
