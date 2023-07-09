@@ -68,7 +68,7 @@ function setTexts(texts) {
 }
 
 function openText(id, message_id) {
-    print(message_id);
+    console.log(message_id);
     $(`#message_x${id}`).text("Shown");
 }
 
