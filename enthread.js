@@ -75,7 +75,7 @@ function openText(e) {
     const longRef = ref(database, `long/${e.data.message_id}`);
     get(longRef).then(snapshot => {
         if (snapshot.exists()) {
-            $(`#message_x${e.data.html_id}`).text(replaceMessage(snapshot.val()));
+            $(`#message_x${e.data.html_id}`).html(replaceMessage(snapshot.val()));
         }
     }).catch(error => console.error(error));
 }
