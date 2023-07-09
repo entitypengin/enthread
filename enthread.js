@@ -75,9 +75,15 @@ function openText(e) {
     const longRef = ref(database, `long/${e.data.message_id}`);
     get(longRef).then(snapshot => {
         if (snapshot.exists()) {
-            $(`#message_x${e.data.html_id}`).html(replaceMessage(snapshot.val()));
+            $(`#message_x${e.data.html_id}`).html(`<input type="button" id="button_x${e.data.html_id}" value="Hide...">${replaceMessage(snapshot.val())}`);
+            $(`#button_x${e.data.html_id}`).on("click", {html_id: e.data.html_id, message_id: e.data.message_id}, closeText);
         }
     }).catch(error => console.error(error));
+}
+
+function closeText(e) {
+    $(`#message_x${e.data.html_id}`).html(`<input type="button" id="button_x${e.data.html_id}" value="Show...">`);
+    $(`#button_x${e.data.html_id}`).on("click", {html_id: e.data.html_id, message_id: e.data.message_id}, openText);
 }
 
 document.title = "Enthread-Beta";
