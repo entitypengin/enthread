@@ -61,14 +61,15 @@ function setTexts(texts) {
             message = `<input type="button" id="button_x${i}" value="Show...">`;
         }
         $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
-        const count = i;
-        $(`#button_x${count}`).on("click", () => {
-            console.log(`#button_x${count}`, `#message_x${count}`);
-            $(`#message_x${count}`).text("Shown");
-        });
+        $(`#button_x${i}`).on("click", {id: i}, openText);
         i++;
     }
     $("#length").text(`${i}`);
+}
+
+function openText(id) {
+    console.log(`#button_x${i}`, `#message_x${i}`);
+    $(`#message_x${id}`).text("Shown");
 }
 
 document.title = "Enthread-Beta";
