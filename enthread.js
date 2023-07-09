@@ -60,7 +60,10 @@ function setTexts(texts) {
         if (message == "!!l") {
             message = `<input type="button" id="button_x${i}" value="Show...">`;
         }
-        $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message">${message}</p></div><hr noshade></div>`);
+        $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
+        $(`#button_x${i}`).on("click", () => {
+            $(`message_x${i}`).text("Shown");
+        });
         i++;
     }
     $("#length").text(`${i}`);
