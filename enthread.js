@@ -1,6 +1,3 @@
-import jQuery from "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
-window.$ = window.jQuery = jQuery;
-
 import {
     initializeApp
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
