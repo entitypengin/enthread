@@ -54,7 +54,7 @@ function setTexts(texts) {
     var time = "";
     for (var id in texts) {
         author = texts[id].author.replace(/</g, "&lt;").replace(/</g, "&gt;");
-        message = texts[id].message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/([a-zA-Z]+:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?/ig, str => `<a href="${str}">${str}</a>`).replace(/#\d+/g, str => `<a href="?x=${str.slice(1)}">${str}</a>`);
+        message = replaceMessage(texts[id].message);
         host = replaceToLink(`${texts[id].host}`);
         time = formatTime(new Date(texts[id].timestamp));
         if (message == "!!l") {
@@ -67,19 +67,17 @@ function setTexts(texts) {
     $("#length").text(`${i}`);
 }
 
+function replaceMessage(message) {
+    return message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>").replace(/([a-zA-Z]+:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?/ig, str => `<a href="${str}">${str}</a>`).replace(/#\d+/g, str => `<a href="?x=${str.slice(1)}">${str}</a>`);
+}
+
 function openText(e) {
     const longRef = ref(database, `long/${e.data.message_id}`);
     get(longRef).then(snapshot => {
         if (snapshot.exists()) {
-            $(`#message_x${e.data.html_id}`).text(`<input type="button" id="button_x${e.data.html_id}" value="Hide..."><br>${snapshot.val()}`);
-            $(`#button_x${e.data.html_id}`).on("click", {html_id: i, message_id: id}, closeText);
+            $(`#message_x${e.data.html_id}`).text(replaceMessage(snapshot.val()));
         }
     }).catch(error => console.error(error));
-}
-
-function closeText(e) {
-    $(`#message_x${e.data.html_id}`).text(`<input type="button" id="button_x${e.data.html_id}" value="Show...">`);
-    $(`#button_x${e.data.html_id}`).on("click", {html_id: e.data.html_id, message_id: e.data.message_id}, openText);
 }
 
 document.title = "Enthread-Beta";
