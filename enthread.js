@@ -59,13 +59,15 @@ function sendText(author, message) {
 
 function setTexts(ids) {
     $("#texts").empty();
-    var i = 0;
+    var i = Object.keys(ids).length;
+    $("#length").text(`${i}`);
     var text;
     var author;
     var message;
     var host;
     var time;
     for (var id in ids) {
+        i--;
         get(ref(database, `texts/${id}`)).then(snapshot => {
             if (snapshot.exists()) {
                 text = snapshot.val();
@@ -78,11 +80,9 @@ function setTexts(ids) {
                 }
                 $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
                 $(`#button_x${i}`).on("click", {html_id: i, message_id: id}, openText);
-                i++;
             }
         }).catch(error => console.error(error));
     }
-    $("#length").text(`${i}`);
 }
 
 function replaceMessage(message) {
