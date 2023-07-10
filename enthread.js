@@ -38,7 +38,7 @@ function sendText(author, message) {
         });
         set(longRef, message);
     }
-    set(child(threadtextsRef, newTextRef.key), "");
+    set(child(ref(database, `threads/${threadParam}/texts`), newTextRef.key), "");
 }
 
 function setTexts(ids) {
