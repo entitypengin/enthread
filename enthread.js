@@ -57,7 +57,7 @@ function sendText(author, message) {
 
 function setTexts(ids) {
     $("#texts").empty();
-    var keys = Object.keys();
+    var keys = Object.keys(ids);
     var i = keys.length;
     $("#length").text(`${i}`);
     var text;
