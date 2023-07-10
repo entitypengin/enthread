@@ -4,6 +4,7 @@ import {
 import {
     getDatabase,
     ref,
+    child,
     set,
     onValue,
     get,
@@ -55,6 +56,7 @@ function sendText(author, message) {
         });
         set(longRef, message);
     }
+    set(child(threadRef, newTextRef.key), "");
 }
 
 function setTexts(ids) {
