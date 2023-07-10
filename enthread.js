@@ -78,7 +78,7 @@ function setTexts(ids) {
                 if (message == "!!l") {
                     message = `<input type="button" id="button_x${i}" value="Show...">`;
                 }
-                $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
+                $("#texts").append(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
                 $(`#button_x${i}`).on("click", {html_id: i, message_id: id}, openText);
             }
         }).catch(error => console.error(error));
