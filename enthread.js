@@ -19,13 +19,9 @@ const database = getDatabase(app);
 const textsRef = ref(database, "texts");
 
 let threadParam = "-NX3EmKRGsjpwD-V_U5W";
-let textParam = "";
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
-}
-if (searchParams.has("x")) {
-    textParam = searchParams.get("x");
 }
 const threadRef = ref(database, `threads/${threadParam}/texts`);
 
@@ -67,7 +63,7 @@ function setTexts(ids) {
     var author;
     var message;
     var host;
-    var time;  
+    var time;
     for (var id of Object.keys(ids).reverse()) {
         get(ref(database, `texts/${id}`)).then(snapshot => {
             i--;
@@ -113,24 +109,5 @@ $("body").append(`<h1><p class="title"><a class="top" href="${location.pathname}
 $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
 
 setInterval(() => $("#time").text(formatTime(new Date())), 1000);
-
-get(threadRef).then(snapshot => {
-    if (snapshot.exists()) {
-        setTexts(snapshot.val());
-        try {
-            if (textParam != "") {
-                var animeSpeed = 500;
-                var target = $(`#x${textParam}`);
-                var position;
-                position = target.offset().top;
-                $("body,html").stop().animate({
-                    scrollTop: position
-                }, animeSpeed);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-}).catch(error => console.error(error));
 
 onValue(threadRef, snapshot => setTexts(snapshot.val()));
