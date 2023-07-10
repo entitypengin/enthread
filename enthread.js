@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const textsRef = ref(database, "texts");
 
-let threadParam = "";
+let threadParam = "-NX3EmKRGsjpwD-V_U5W";
 let textParam = "";
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
@@ -26,6 +26,7 @@ if (searchParams.has("t")) {
 if (searchParams.has("x")) {
     textParam = searchParams.get("x");
 }
+const threadRef = ref(database, `threads/${threadParam}/texts`);
 
 function formatTime(date) {
     return `${("0000" + date.getUTCFullYear()).slice(-4)}-${("00" + date.getUTCMonth()).slice(-2)}-${("00" + date.getUTCDate()).slice(-2)} ${("00" + date.getUTCHours()).slice(-2)}:${("00" + date.getUTCMinutes()).slice(-2)}:${("00" + date.getUTCSeconds()).slice(-2)}`;
@@ -56,24 +57,30 @@ function sendText(author, message) {
     }
 }
 
-function setTexts(texts) {
+function setTexts(ids) {
     $("#texts").empty();
     var i = 0;
-    var author = "";
-    var message = "";
-    var host = "";
-    var time = "";
-    for (var id in texts) {
-        author = texts[id].author.replace(/</g, "&lt;").replace(/</g, "&gt;");
-        message = replaceMessage(texts[id].message);
-        host = replaceToLink(`${texts[id].host}`);
-        time = formatTime(new Date(texts[id].timestamp));
-        if (message == "!!l") {
-            message = `<input type="button" id="button_x${i}" value="Show...">`;
-        }
-        $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
-        $(`#button_x${i}`).on("click", {html_id: i, message_id: id}, openText);
-        i++;
+    var text;
+    var author;
+    var message;
+    var host;
+    var time;
+    for (var id in ids) {
+        get(ref(database, `texts/${id}`)).then(snapshot => {
+            if (snapshot.exists()) {
+                text = snapshot.val();
+                author = text.author.replace(/</g, "&lt;").replace(/</g, "&gt;");
+                message = replaceMessage(text.message);
+                host = replaceToLink(`${text.host}`);
+                time = formatTime(new Date(text.timestamp));
+                if (message == "!!l") {
+                    message = `<input type="button" id="button_x${i}" value="Show...">`;
+                }
+                $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
+                $(`#button_x${i}`).on("click", {html_id: i, message_id: id}, openText);
+                i++;
+            }
+        }).catch(error => console.error(error));
     }
     $("#length").text(`${i}`);
 }
@@ -105,7 +112,7 @@ $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_m
 
 setInterval(() => $("#time").text(formatTime(new Date())), 1000);
 
-get(textsRef).then(snapshot => {
+get(threadRef).then(snapshot => {
     if (snapshot.exists()) {
         setTexts(snapshot.val());
         try {
@@ -124,4 +131,4 @@ get(textsRef).then(snapshot => {
     }
 }).catch(error => console.error(error));
 
-onValue(textsRef, snapshot => setTexts(snapshot.val()));
+onValue(threadRef, snapshot => setTexts(snapshot.val()));
