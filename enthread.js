@@ -67,8 +67,8 @@ function setTexts(ids) {
     var host;
     var time;
     for (var id in ids) {
-        var count = --i;
         get(ref(database, `texts/${id}`)).then(snapshot => {
+            i--;
             if (snapshot.exists()) {
                 text = snapshot.val();
                 author = text.author.replace(/</g, "&lt;").replace(/</g, "&gt;");
