@@ -65,11 +65,8 @@ function setTexts(ids) {
     var author;
     var message;
     var host;
-    var time;
-    console.log(ids);
-    console.log(Object.keys(ids));
-    console.log(Object.keys(ids).reverse());    
-    for (var id in ids) {
+    var time;  
+    for (var id of Object.keys(ids).reverse()) {
         get(ref(database, `texts/${id}`)).then(snapshot => {
             i--;
             if (snapshot.exists()) {
