@@ -66,6 +66,9 @@ function setTexts(ids) {
     var message;
     var host;
     var time;
+    console.log(ids);
+    console.log(Object.keys(ids));
+    console.log(Object.keys(ids).reverse());    
     for (var id in ids) {
         get(ref(database, `texts/${id}`)).then(snapshot => {
             i--;
