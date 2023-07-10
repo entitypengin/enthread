@@ -57,7 +57,7 @@ function sendText(author, message) {
 
 function setTexts(ids) {
     $("#texts").empty();
-    var keys = Object.keys(ids).reverse();
+    var keys = Object.keys(ids);
     var i = keys.length;
     $("#length").text(`${i}`);
     var text;
@@ -65,7 +65,7 @@ function setTexts(ids) {
     var message;
     var host;
     var time;
-    for (var id of keys) {
+    for (var id of [...keys].reverse()) {
         get(ref(database, `texts/${id}`)).then(snapshot => {
             i--;
             if (snapshot.exists()) {
