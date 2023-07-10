@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const textsRef = ref(database, "texts");
 
-let threadParam = "-NX3EmKRGsjpwD-V_U5W";
+let threadParam = "";
 const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
@@ -79,7 +79,6 @@ function setTexts(ids) {
                 }
                 $("#texts").append(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
                 $(`#button_x${i}`).on("click", {html_id: i, message_id: keys[i]}, openText);
-                console.log({html_id: i, message_id: keys[i]});
             }
         }).catch(error => console.error(error));
     }
@@ -90,7 +89,6 @@ function replaceMessage(message) {
 }
 
 function openText(e) {
-    console.log("openText");
     const longRef = ref(database, `long/${e.data.message_id}`);
     get(longRef).then(snapshot => {
         if (snapshot.exists()) {
@@ -101,7 +99,6 @@ function openText(e) {
 }
 
 function closeText(e) {
-    console.log("closeText");
     $(`#message_x${e.data.html_id}`).html(`<input type="button" id="button_x${e.data.html_id}" value="Show...">`);
     $(`#button_x${e.data.html_id}`).on("click", e.data, openText);
 }
