@@ -8,7 +8,8 @@ import {
     set,
     onValue,
     get,
-    push
+    push,
+    update
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 function formatTime(date) {
@@ -20,25 +21,28 @@ function replaceToLink(str) {
 }
 
 function sendText(author, message) {
-    const newTextRef = push(textsRef);
+    const newTextKey = push(textsRef).key;
+
+    const updates = {};
+
     if (message.length < 200) {
-        set(newTextRef, {
+        updates[`/texts/${newTextKey}`] = {
             author: author,
             message: message,
             host: location.hostname,
             timestamp: Date.now()
-        });
+        };
     } else {
-        const longRef = ref(database, `long/${newTextRef.key}`);
-        set(newTextRef, {
+        updates[`/texts/${newTextKey}`] = {
             author: author,
             message: "!!l",
             host: location.hostname,
             timestamp: Date.now()
-        });
-        set(longRef, message);
+        };
+        updates[`/long/${newTextKey}`] = message;
     }
-    set(child(ref(database, `threads/${threadParam}/texts`), newTextRef.key), "");
+    updates[`/threads/${threadParam}/texts/${newTextKey}`] = "";
+    update(ref(database), updates);
 }
 
 function setTexts(ids) {
