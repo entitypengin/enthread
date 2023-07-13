@@ -5,7 +5,6 @@ import {
     getDatabase,
     ref,
     child,
-    set,
     onValue,
     get,
     push,
@@ -25,24 +24,24 @@ function sendText(author, message) {
 
     const updates = {};
 
-    if (message.length < 200) {
-        updates[`/texts/${newTextKey}`] = {
-            author: author,
-            message: message,
-            host: location.hostname,
-            timestamp: Date.now()
-        };
-    } else {
-        updates[`/texts/${newTextKey}`] = {
-            author: author,
-            message: "!!l",
-            host: location.hostname,
-            timestamp: Date.now()
-        };
+    if (message.length >= 200) {
         updates[`/long/${newTextKey}`] = message;
+        message = "!!l";
     }
+
+    updates[`/texts/${newTextKey}`] = {
+        author: author,
+        message: message,
+        host: location.hostname,
+        timestamp: Date.now()
+    };
+
     updates[`/threads/${threadParam}/texts/${newTextKey}`] = "";
-    update(ref(database), updates);
+    update(ref(database), updates).then(() => {
+        console.log("success!");
+    }).catch(() => {
+        console.log("failed...");
+    });
 }
 
 function setTexts(ids) {
