@@ -106,9 +106,9 @@ if (threadParam !== null) {
         $("#thread_name").text(thread.name);
         get(ref(database, `css_presets/${thread.css_presets}`)).then(snapshot => {
             var css_presets = snapshot.val();
-            $("body").css(css_presets);
-            $("input").css(css_presets);
-            $("textarea").css(css_presets);
+            for (var key in css_presets) {
+                $(key).css(css_presets[key]);
+            }
         });
     });
 
