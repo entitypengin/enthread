@@ -5,7 +5,7 @@ import {
     getDatabase,
     ref,
     child,
-    onValue,
+    onChildAdded,
     get,
     push,
     update
