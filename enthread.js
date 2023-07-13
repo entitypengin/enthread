@@ -44,33 +44,21 @@ function sendText(author, message) {
     });
 }
 
-function setTexts(ids) {
-    $("#texts").empty();
-    var keys = Object.keys(ids);
-    var i = keys.length;
-    $("#length").text(`${i}`);
-    var text;
-    var author;
-    var message;
-    var host;
-    var time;
-    for (var id of [...keys].reverse()) {
-        get(ref(database, `texts/${id}`)).then(snapshot => {
-            i--;
-            if (snapshot.exists()) {
-                text = snapshot.val();
-                author = text.author.replace(/</g, "&lt;").replace(/</g, "&gt;");
-                message = replaceMessage(text.message);
-                host = replaceToLink(`${text.host}`);
-                time = formatTime(new Date(text.timestamp));
-                if (message == "!!l") {
-                    message = `<input type="button" id="button_x${i}" value="Show...">`;
-                }
-                $("#texts").append(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
-                $(`#button_x${i}`).on("click", {html_id: i, message_id: keys[i]}, openText);
+function setText(i, key) {
+    get(ref(database, `texts/${key}`)).then(snapshot => {
+        if (snapshot.exists()) {
+            var text = snapshot.val();
+            var author = text.author.replace(/</g, "&lt;").replace(/</g, "&gt;");
+            var message = replaceMessage(text.message);
+            var host = replaceToLink(`${text.host}`);
+            var time = formatTime(new Date(text.timestamp));
+            if (message == "!!l") {
+                message = `<input type="button" id="button_x${i}" value="Show...">`;
             }
-        }).catch(error => console.error(error));
-    }
+            $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
+            $(`#button_x${i}`).on("click", {html_id: i, message_id: key}, openText);
+        }
+    }).catch(error => console.error(error));
 }
 
 function replaceMessage(message) {
@@ -121,5 +109,9 @@ if (threadParam !== null) {
 
     setInterval(() => $("#time").text(formatTime(new Date())), 1000);
 
-    onValue(threadtextsRef, snapshot => setTexts(snapshot.val()));    
+    var textsCount = 0;
+
+    onChildAdded(threadtextsRef, data => setText(textsCount++, data.key));
+
+    $("#length").text(`${textsCount}`);
 }
