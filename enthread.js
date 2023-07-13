@@ -104,9 +104,12 @@ if (threadParam !== null) {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        $("body").css({"background-color": thread.bg, color: thread.fg});
-        $("input").css({"background-color": thread.bg, color: thread.fg});
-        $("textarea").css({"background-color": thread.bg, color: thread.fg});
+        get(ref(database, `css_presets/${thread.css_presets}`)).then(snapshot => {
+            var css_presets = snapshot.val();
+            $("body").css(css_presets);
+            $("input").css(css_presets);
+            $("textarea").css(css_presets);
+        });
     });
 
     $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
