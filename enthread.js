@@ -106,6 +106,7 @@ if (threadParam !== null) {
         $("#thread_name").text(thread.name);
         $("body").css({"background-color": thread.bg, color: thread.fg});
         $("input").css({"background-color": thread.bg, color: thread.fg});
+        $("textarea").css({"background-color": thread.bg, color: thread.fg});
     });
 
     $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
