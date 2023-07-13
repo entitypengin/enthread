@@ -57,6 +57,7 @@ function setText(i, key) {
             }
             $("#texts").prepend(`<div id="x${i}" class="text"><div class="content"><p class="id">${i}: ${author} (${host}, ${time})</p><p class="message", id="message_x${i}">${message}</p></div><hr noshade></div>`);
             $(`#button_x${i}`).on("click", {html_id: i, message_id: key}, openText);
+            $("#length").text(`${++i}`);
         }
     }).catch(error => console.error(error));
 }
@@ -112,6 +113,4 @@ if (threadParam !== null) {
     var textsCount = 0;
 
     onChildAdded(threadtextsRef, data => setText(textsCount++, data.key));
-
-    $("#length").text(`${textsCount}`);
 }
