@@ -1,0 +1,71 @@
+hr {
+    color: #AAA;
+    border-color: #AAA;
+}
+a:link {
+    color: #0A0;
+}
+a:hover {
+    color: #0AA;
+}
+a:visited {
+    color: #A0A;
+}
+a:active {
+    color: #AA0;
+}
+a.top:link,a.top:visited {
+    color: black;
+}
+a.top:hover {
+    color: #AAA;
+}
+a.top:active {
+    color: #555;
+}
+body {
+    background-color: white;
+    color: black;
+}
+textarea {
+    border-color: #AAA;
+    background-color: white;
+    color: black;
+}
+::placeholder {
+    color: #AAA;
+}
+textarea:hover {
+    border-color: #0AA;
+}
+textarea:focus {
+    border-color: #AA0;
+}
+input {
+    background-color: white;
+    color: black;
+}
+::placeholder {
+    color: #AAA;
+}
+input[type="text"] {
+    border-bottom-color: #AAA;
+}
+input[type="text"]:hover {
+    border-bottom-color: #0AA;
+}
+input[type="text"]:focus {
+    border-bottom-color: #AA0;
+}
+input[type="button"] {
+    color: #AAA;
+    border-bottom-color: #AAA;
+}
+input[type="button"]:hover {
+    color: #0AA;
+    border-bottom-color: #0AA;
+}
+input[type="button"]:active {
+    color: #AA0;
+    border-bottom-color: #AA0;
+}
