@@ -11,40 +11,152 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const css_presets = {
-    black: {
-        body: {
-            "background-color": "black",
-            color: "white"
-        },
-        input: {
-            "background-color": "black",
-            color: "white"
-        },
-        'input[type="button"]': {
-            color: "#AAA"
-        },
-        textarea: {
-            "background-color": "black",
-            color: "white"
-        }
-    },
-    white: {
-        body: {
-            "background-color": "white",
-            color: "black"
-        },
-        input: {
-            "background-color": "white",
-            color: "black"
-        },
-        'input[type="button"]': {
-            color: "#AAA"
-        },
-        textarea: {
-            "background-color": "white",
-            color: "black"
-        }
-    }
+    black: ```
+hr {
+    color: #AAA;
+    border: #AAA;
+}
+a:link {
+    color: #0A0;
+}
+a:hover {
+    color: #0AA;
+}
+a:visited {
+    color: #A0A;
+}
+a:active {
+    color: #AA0;
+}
+a.top:link,a.top:visited {
+    color: white;
+}
+a.top:hover {
+    color: #AAA;
+}
+a.top:active {
+    color: #555;
+}
+body {
+    background-color: black;
+    color: white;
+}
+textarea {
+    border: #AAA;
+    background-color: black;
+    color: white;
+}
+::placeholder {
+    color: #AAA;
+}
+textarea:hover {
+    border: #0AA;
+}
+textarea:focus {
+    border: #AA0;
+}
+input {
+    background-color: black;
+    color: white;
+}
+::placeholder {
+    color: #AAA;
+}
+input[type="text"] {
+    border-bottom: #AAA;
+}
+input[type="text"]:hover {
+    border-bottom: #0AA;
+}
+input[type="text"]:focus {
+    border-bottom: #AA0;
+}
+input[type="button"] {
+    color: #AAA;
+    border-bottom: #AAA;
+}
+input[type="button"]:hover {
+    color: #0AA;
+    border-bottom: #0AA;
+}
+input[type="button"]:active {
+    color: #AA0;
+    border-bottom: #AA0;
+}
+```,
+    white: ```
+hr {
+    color: #AAA;
+    border: #AAA;
+}
+a:link {
+    color: #0A0;
+}
+a:hover {
+    color: #0AA;
+}
+a:visited {
+    color: #A0A;
+}
+a:active {
+    color: #AA0;
+}
+a.top:link,a.top:visited {
+    color: black;
+}
+a.top:hover {
+    color: #AAA;
+}
+a.top:active {
+    color: #555;
+}
+body {
+    background-color: white;
+    color: black;
+}
+textarea {
+    border: #AAA;
+    background-color: white;
+    color: black;
+}
+::placeholder {
+    color: #AAA;
+}
+textarea:hover {
+    border: #0AA;
+}
+textarea:focus {
+    border: #AA0;
+}
+input {
+    background-color: white;
+    color: black;
+}
+::placeholder {
+    color: #AAA;
+}
+input[type="text"] {
+    border-bottom: #AAA;
+}
+input[type="text"]:hover {
+    border-bottom: #0AA;
+}
+input[type="text"]:focus {
+    border-bottom: #AA0;
+}
+input[type="button"] {
+    color: #AAA;
+    border-bottom: #AAA;
+}
+input[type="button"]:hover {
+    color: #0AA;
+    border-bottom: #0AA;
+}
+input[type="button"]:active {
+    color: #AA0;
+    border-bottom: #AA0;
+}
+```
 }
 
 function formatTime(date) {
@@ -133,16 +245,17 @@ if (searchParams.has("t")) {
 }
 
 if (threadParam !== null) {
+    $("head").append("<style id='stylesheet' type='text/css'></style>");
     $("body").empty();
     $("body").append(`<h1><p class="title"><a class="top" href="${location.origin}${location.pathname}">Enthread</a></p><p id="thread_name"></p></h1><h2><hr noshade><div id="send" class="text"><p class="id"><span id="length">0</span>: <input type="text" id="send_author" placeholder="Your name">(${replaceToLink(location.hostname)}, <span id="time">2038-01-19 03:14:07</span>)</p><div class="areas"><div><textarea id="send_message" placeholder="Your message"></textarea></div></div><div class="buttons flex-box-between"><div class="button"><!-- <input type="file" id="send_file"> --></div><div class="button"><input type="button" id="send_button" value="SEND"></div></div><hr noshade></div><div id="texts"></div><div><a href="https://github.com/entitypengin/enthread">Github</a></div></h2>`);
+
     get(ref(database, `threads/${threadParam}`)).then(snapshot => {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        for (var key in css_presets[thread.css_presets]) {
-            $(key).css(css_presets[thread.css_presets][key]);
-        }
+        $("#stylesheet").html(css_presets[thread.css_presets]);
     });
+
 
     $("#send_button").on("click", () => {
         if ($("#send_message").val() != "") {
