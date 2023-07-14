@@ -11,7 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const css_presets = {
-    black: ```
+    black: `
 hr {
     color: #AAA;
     border: #AAA;
@@ -83,8 +83,8 @@ input[type="button"]:active {
     color: #AA0;
     border-bottom: #AA0;
 }
-```,
-    white: ```
+`,
+    white: `
 hr {
     color: #AAA;
     border: #AAA;
@@ -156,7 +156,7 @@ input[type="button"]:active {
     color: #AA0;
     border-bottom: #AA0;
 }
-```
+`
 }
 
 function formatTime(date) {
