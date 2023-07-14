@@ -14,7 +14,7 @@ const css_presets = {
     black: `
 hr {
     color: #AAA;
-    border: #AAA;
+    border-color: #AAA;
 }
 a:link {
     color: #0A0;
@@ -42,7 +42,7 @@ body {
     color: white;
 }
 textarea {
-    border: #AAA;
+    border-color: #AAA;
     background-color: black;
     color: white;
 }
@@ -50,10 +50,10 @@ textarea {
     color: #AAA;
 }
 textarea:hover {
-    border: #0AA;
+    border-color: #0AA;
 }
 textarea:focus {
-    border: #AA0;
+    border-color: #AA0;
 }
 input {
     background-color: black;
@@ -87,7 +87,7 @@ input[type="button"]:active {
     white: `
 hr {
     color: #AAA;
-    border: #AAA;
+    border-color: #AAA;
 }
 a:link {
     color: #0A0;
@@ -115,7 +115,7 @@ body {
     color: black;
 }
 textarea {
-    border: #AAA;
+    border-color: #AAA;
     background-color: white;
     color: black;
 }
@@ -123,10 +123,10 @@ textarea {
     color: #AAA;
 }
 textarea:hover {
-    border: #0AA;
+    border-color: #0AA;
 }
 textarea:focus {
-    border: #AA0;
+    border-color: #AA0;
 }
 input {
     background-color: white;
