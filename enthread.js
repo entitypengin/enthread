@@ -10,6 +10,37 @@ import {
     update
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
+const css_presets = {
+    "black": {
+        "body": {
+            "background-color": "black",
+            "color": "white"
+        },
+        "input": {
+            "background-color": "black",
+            "color": "white"
+        },
+        "textarea": {
+            "background-color": "black",
+            "color": "white"
+        }
+    },
+    "white": {
+        "body": {
+            "background-color": "white",
+            "color": "black"
+        },
+        "input": {
+            "background-color": "white",
+            "color": "black"
+        },
+        "textarea": {
+            "background-color": "white",
+            "color": "black"
+        }
+    }
+}
+
 function formatTime(date) {
     return `${("0000" + date.getUTCFullYear()).slice(-4)}-${("00" + (date.getUTCMonth() + 1)).slice(-2)}-${("00" + date.getUTCDate()).slice(-2)} ${("00" + date.getUTCHours()).slice(-2)}:${("00" + date.getUTCMinutes()).slice(-2)}:${("00" + date.getUTCSeconds()).slice(-2)}`;
 }
@@ -101,12 +132,9 @@ if (threadParam !== null) {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        get(ref(database, `css_presets/${thread.css_presets}`)).then(snapshot => {
-            var css_presets = snapshot.val();
-            for (var key in css_presets) {
-                $(key).css(css_presets[key]);
-            }
-        });
+        for (var key in css_presets) {
+            $(key).css(css_presets[key]);
+        }
     });
 
     $("#send_button").on("click", () => {
