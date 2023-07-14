@@ -132,8 +132,8 @@ if (threadParam !== null) {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        for (var key in css_presets) {
-            $(key).css(css_presets[key]);
+        for (var key in css_presets[thread.css_presets]) {
+            $(key).css(css_presets[thread.css_presets][key]);
         }
     });
 
