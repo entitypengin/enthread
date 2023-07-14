@@ -37,7 +37,8 @@ function sendText(author, message) {
 
     updates[`/threads/${threadParam}/texts/${newTextKey}`] = "";
     update(ref(database), updates).then(() => {
-        console.log("success!");
+        $("#send_message").val("");
+        setTimeout(() => console.log("success!"), 20_000);
     }).catch(() => {
         console.log("failed...");
     });
