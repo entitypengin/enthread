@@ -110,7 +110,7 @@ if (threadParam !== null) {
     });
 
     $("#send_button").on("click", () => {
-        if (!$("#send_message").val()) {
+        if ($("#send_message").val() != "") {
             sendText($("#send_author").val(), $("#send_message").val());
         }
     });
