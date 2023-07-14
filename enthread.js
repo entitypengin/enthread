@@ -11,32 +11,38 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const css_presets = {
-    "black": {
-        "body": {
+    black: {
+        body: {
             "background-color": "black",
-            "color": "white"
+            color: "white"
         },
-        "input": {
+        input: {
             "background-color": "black",
-            "color": "white"
+            color: "white"
         },
-        "textarea": {
+        'input[type="button"]': {
+            color: "#AAA"
+        },
+        textarea: {
             "background-color": "black",
-            "color": "white"
+            color: "white"
         }
     },
-    "white": {
-        "body": {
+    white: {
+        body: {
             "background-color": "white",
-            "color": "black"
+            color: "black"
         },
-        "input": {
+        input: {
             "background-color": "white",
-            "color": "black"
+            color: "black"
         },
-        "textarea": {
+        'input[type="button"]': {
+            color: "#AAA"
+        },
+        textarea: {
             "background-color": "white",
-            "color": "black"
+            color: "black"
         }
     }
 }
@@ -69,7 +75,8 @@ function sendText(author, message) {
     updates[`/threads/${threadParam}/texts/${newTextKey}`] = "";
     update(ref(database), updates).then(() => {
         $("#send_message").val("");
-        setTimeout(() => console.log("success!"), 20_000);
+        $("#send_button").prop("disabled", true);
+        setTimeout(() => $("#send_button").prop("disabled", false), 20_000);
     }).catch(() => {
         console.log("failed...");
     });
