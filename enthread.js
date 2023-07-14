@@ -39,7 +39,15 @@ function sendText(author, message) {
     update(ref(database), updates).then(() => {
         $("#send_message").val("");
         $("#send_button").prop("disabled", true);
-        setTimeout(() => $("#send_button").prop("disabled", false), 20_000);
+        var i = 20;
+        var id = setInterval(() => {
+            $("#send_button").val(`${--i}sec...`);
+            if (i <= 0) {
+                $("#send_button").prop("disabled", false);
+                $("#send_button").val("SEND");
+                clearInterval(id);
+            }
+        }, 1_000);
     }).catch(() => {
         console.log("failed...");
     });
@@ -113,7 +121,7 @@ if (threadParam !== null) {
         }
     });
 
-    setInterval(() => $("#time").text(formatTime(new Date())), 1000);
+    setInterval(() => $("#time").text(formatTime(new Date())), 1_000);
 
     var textsCount = 0;
 
