@@ -109,7 +109,11 @@ if (threadParam !== null) {
         });
     });
 
-    $("#send_button").on("click", () => sendText($("#send_author").val(), $("#send_message").val()));
+    $("#send_button").on("click", () => {
+        if (!$("#send_message").val()) {
+            sendText($("#send_author").val(), $("#send_message").val());
+        }
+    });
 
     setInterval(() => $("#time").text(formatTime(new Date())), 1000);
 
