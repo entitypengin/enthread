@@ -63,25 +63,25 @@ input {
     color: #AAA;
 }
 input[type="text"] {
-    border-bottom: #AAA;
+    border-bottom-color: #AAA;
 }
 input[type="text"]:hover {
-    border-bottom: #0AA;
+    border-bottom-color: #0AA;
 }
 input[type="text"]:focus {
-    border-bottom: #AA0;
+    border-bottom-color: #AA0;
 }
 input[type="button"] {
     color: #AAA;
-    border-bottom: #AAA;
+    border-bottom-color: #AAA;
 }
 input[type="button"]:hover {
     color: #0AA;
-    border-bottom: #0AA;
+    border-bottom-color: #0AA;
 }
 input[type="button"]:active {
     color: #AA0;
-    border-bottom: #AA0;
+    border-bottom-color: #AA0;
 }
 `,
     white: `
@@ -136,25 +136,25 @@ input {
     color: #AAA;
 }
 input[type="text"] {
-    border-bottom: #AAA;
+    border-bottom-color: #AAA;
 }
 input[type="text"]:hover {
-    border-bottom: #0AA;
+    border-bottom-color: #0AA;
 }
 input[type="text"]:focus {
-    border-bottom: #AA0;
+    border-bottom-color: #AA0;
 }
 input[type="button"] {
     color: #AAA;
-    border-bottom: #AAA;
+    border-bottom-color: #AAA;
 }
 input[type="button"]:hover {
     color: #0AA;
-    border-bottom: #0AA;
+    border-bottom-color: #0AA;
 }
 input[type="button"]:active {
     color: #AA0;
-    border-bottom: #AA0;
+    border-bottom-color: #AA0;
 }
 `
 }
