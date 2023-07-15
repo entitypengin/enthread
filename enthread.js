@@ -102,6 +102,9 @@ const searchParams = new URLSearchParams(location.search);
 if (searchParams.has("t")) {
     threadParam = searchParams.get("t");
 }
+if (searchParams.has("c")) {
+    $("head").append(`<link type="text/css" rel="stylesheet" href="css/${searchParams.get("c")}.css">`);
+}
 
 if (threadParam !== null) {
     $("body").empty();
@@ -111,9 +114,7 @@ if (threadParam !== null) {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        $("head").append(`<link type="text/css" rel="stylesheet" href="css/${thread.css_presets}.css">`);
     });
-
 
     $("#send_button").on("click", () => {
         if ($("#send_message").val() != "") {
