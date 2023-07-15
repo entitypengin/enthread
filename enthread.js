@@ -111,7 +111,7 @@ if (threadParam !== null) {
         const thread = snapshot.val();
         document.title = `${thread.name} - Enthread`;
         $("#thread_name").text(thread.name);
-        $("head").append(`<link type="text/css" rel="stylesheet" href="https://entitypengin.github.io/enthread/css/${thread.css_presets}.css">`);
+        $("head").append(`<link type="text/css" rel="stylesheet" href="css/${thread.css_presets}.css">`);
     });
 
 
