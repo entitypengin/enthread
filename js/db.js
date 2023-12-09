@@ -63,15 +63,15 @@ export function onTextAdded(id, call) {
  * @returns {Promise<TextObject>}
  */
 export async function getText(key) {
-    const [objectSettledResult, filesSettledResult] = await Promise.allSettled([get(child(textsRef, key)), get(child(imagesRef, key))]);
-    const object = objectSettledResult.value.val()
+    const [objectSettledResult, filesSettledResult] = await Promise.all([get(child(textsRef, key)), get(child(imagesRef, key))]);
+    const object = objectSettledResult.val()
 
     return {
         author: object.author,
         message: object.message,
         host: object.host,
         timestamp: object.timestamp,
-        files: filesSettledResult.value.exists() ? [filesSettledResult.value.val()] : []
+        files: filesSettledResult.exists() ? [filesSettledResult.val()] : []
     };
 }
 
