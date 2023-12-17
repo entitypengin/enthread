@@ -129,7 +129,7 @@ export class BaseTextElement {
     }
 
     init(textData) {
-        this.textData = new TextData(textData)
+        this.textData = textData
     }
 
     child(cls) {
