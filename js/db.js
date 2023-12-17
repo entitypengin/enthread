@@ -58,14 +58,14 @@ export async function getText(key) {
     const [objectSettledResult, filesSettledResult] = await Promise.all([get(child(textsRef, key)), get(child(imagesRef, key))]);
     const object = objectSettledResult.val()
 
-    return {
+    return TextData({
         index: 0,
         author: object.author,
         message: object.message,
         host: object.host,
         timestamp: object.timestamp,
         files: filesSettledResult.exists() ? [filesSettledResult.val()] : []
-    };
+    });
 }
 
 /**
@@ -73,7 +73,8 @@ export async function getText(key) {
  * @param {string} id
  * @param {TextData} object
  */
-export async function sendText(id, {author, message, host, timestamp, files}) {
+export async function sendText(id, object) {
+    const {author, message, host, timestamp, files} = object.data;
     const textKey = push(ref(database, `threads/${id}`)).key;
 
     const updates = {};
