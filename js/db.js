@@ -12,7 +12,6 @@ import {
     ref,
     update
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-import { TextData } from "./text.js";
 
 /**
  * @typedef ThreadObject
@@ -20,6 +19,15 @@ import { TextData } from "./text.js";
  * @property {string} anonymous
  * @property {number} cooldown
  * @property {string[]} texts
+ */
+
+/**
+ * @typedef TextObject
+ * @property {string} author
+ * @property {string} message
+ * @property {string} host
+ * @property {number} timestamp
+ * @property {string[]} files
  */
 
 export class ThreadIDError extends Error {}
@@ -52,29 +60,27 @@ export function onTextAdded(id, call) {
 /**
  * 
  * @param {string} key
- * @returns {Promise<TextData>}
+ * @returns {Promise<TextObject>}
  */
 export async function getText(key) {
     const [objectSettledResult, filesSettledResult] = await Promise.all([get(child(textsRef, key)), get(child(imagesRef, key))]);
     const object = objectSettledResult.val()
 
-    return TextData({
-        index: 0,
+    return {
         author: object.author,
         message: object.message,
         host: object.host,
         timestamp: object.timestamp,
         files: filesSettledResult.exists() ? [filesSettledResult.val()] : []
-    });
+    };
 }
 
 /**
  * 
  * @param {string} id
- * @param {TextData} object
+ * @param {TextObject} object
  */
-export async function sendText(id, object) {
-    const {author, message, host, timestamp, files} = object.data;
+export async function sendText(id, {author, message, host, timestamp, files}) {
     const textKey = push(ref(database, `threads/${id}`)).key;
 
     const updates = {};
