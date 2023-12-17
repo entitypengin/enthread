@@ -5,73 +5,9 @@ import {
     formatTime
 } from "./functions.js";
 
-export class TextData {
-    /**
-     * @type {number}
-     */
-    index;
-    /**
-     * @type {string}
-     */
-    author;
-    /**
-     * @type {string}
-     */
-    message;
-    /**
-     * @type {string[]}
-     */
-    files;
-    /**
-     * @type {string}
-     */
-    host;
-    /**
-     * @type {number}
-     */
-    timestamp;
-
-    constructor(data) {
-        this.data = data;
-    }
-
-    get data() {
-        return {
-            index: this.index,
-            author: this.author,
-            message: this.message,
-            host: this.host,
-            timestamp: this.timestamp,
-            files: this.files
-        };
-    }
-
-    set data({index = 0, author = "", message = "", host = null, timestamp = 0, files = null}) {
-        this.index = index;
-        this.author = author;
-        this.message = message;
-        this.host = host ?? location.hostname;
-        this.timestamp = timestamp;
-        this.files = files ?? [];
-    }
-
-    get time() {
-        return formatTime(new Date(this.timestamp));
-    }
-
-    get isLong() {
-        return this.textData.message.length >= 200;
-    }
-
-    get hasFiles() {
-        return this.textData.files.length != 0;
-    }
-}
-
-export class BaseTextElement {
+export class BaseText {
     #id;
     #element;
-    #elementIndex;
     #elementAuthor;
     #elementMessage;
     #elementRawMessage;
@@ -79,14 +15,12 @@ export class BaseTextElement {
     #elementHost;
     #elementTime;
 
-    /**
-     * @type {TextData}
-     */
-    textData;
+    author;
+    message;
+    files;
+    host;
+    timestamp;
 
-    /**
-     * @type {{[x: string]: Button}}
-     */
     buttons;
 
     constructor(id) {
@@ -99,8 +33,6 @@ export class BaseTextElement {
 
         this.child("content").append("<p class='id'></p>");
         this.child("id").append(`<span class="author"></span>`);
-        this.child("id").prepend("<a class='text-id text-id-index'></a>: ");
-        this.child("text-id-index").attr("href", `#${this.id}`);
 
         this.child("content").append("<p class='message-box'></p>");
         this.child("message-box").append("<span class='message'></span>");
@@ -128,21 +60,34 @@ export class BaseTextElement {
         return this.#element;
     }
 
-    init(textData) {
-        this.textData = textData
+    get time() {
+        return formatTime(new Date(this.timestamp));
+    }
+
+    get data() {
+        return {
+            author: this.author,
+            message: this.message,
+            host: this.host,
+            timestamp: this.timestamp,
+            files: this.files
+        };
+    }
+
+    set data({author = "", message = "", host = null, timestamp = 0, files = null}) {
+        this.author = author;
+        this.message = message;
+        this.host = host ?? location.hostname;
+        this.timestamp = timestamp;
+        this.files = files ?? [];
+    }
+
+    init(data) {
+        this.data = data
     }
 
     child(cls) {
         return this.element.find(`.${cls}`);
-    }
-
-    get elementIndex() {
-        return this.#elementIndex;
-    }
-
-    set elementIndex(value) {
-        this.#elementIndex = value;
-        this.child("text-id-index").text(value ?? this.textData.index);
     }
 
     get elementAuthor() {
@@ -151,7 +96,7 @@ export class BaseTextElement {
 
     set elementAuthor(value) {
         this.#elementAuthor = value;
-        this.child("author").text(value ?? this.textData.author);
+        this.child("author").text(value ?? this.author);
     }
 
     get elementMessage() {
@@ -160,7 +105,7 @@ export class BaseTextElement {
 
     set elementMessage(value) {
         this.#elementMessage = value;
-        this.child("message").html(replaceStyle(replaceAnchor(replaceLink(escapeToHTML(value ?? this.textData.message)))));
+        this.child("message").html(replaceStyle(replaceAnchor(replaceLink(escapeToHTML(value ?? this.message)))));
     }
 
     get elementRawMessage() {
@@ -169,7 +114,7 @@ export class BaseTextElement {
 
     set elementRawMessage(value) {
         this.#elementRawMessage = value;
-        this.child("raw-message").text(value ?? this.textData.message);
+        this.child("raw-message").text(value ?? this.message);
     }
 
     get elementHost() {
@@ -178,7 +123,7 @@ export class BaseTextElement {
 
     set elementHost(value) {
         this.#elementHost = value;
-        this.child("host").html(replaceLink(value ?? this.textData.host));
+        this.child("host").html(replaceLink(value ?? this.host));
     }
 
     get elementTime() {
@@ -187,7 +132,7 @@ export class BaseTextElement {
 
     set elementTime(value) {
         this.#elementTime = value;
-        this.child("time").text(value ?? this.textData.time);
+        this.child("time").text(value ?? this.time);
     }
 
     get elementFiles() {
@@ -197,19 +142,11 @@ export class BaseTextElement {
     set elementFiles(values) {
         this.#elementFiles = values
         this.child("image-box").empty();
-        for (const base64 of values ?? this.textData.files) {
+        for (const base64 of values ?? this.files) {
             this.child("image-box").append(`<img class="text-img" src="${base64}">`);
         }
     }
 
-    /**
-     * 
-     * @param {string} cls
-     * @param {boolean} isLeft
-     * @param {string} value
-     * @param {Function} event
-     * @returns {Button}
-     */
     newButton(cls, isLeft, value = "", event = null) {
         this.child(isLeft ? "left-buttons" : "right-buttons").append(`<input type="button" class="button ${cls}-button">`);
         const button = new Button(this, cls);
@@ -221,9 +158,6 @@ export class BaseTextElement {
 }
 
 export class Button {
-    /**
-     * @type {BaseTextElement}
-     */
     master;
 
     #isdisabled;
@@ -232,11 +166,6 @@ export class Button {
 
     cls;
 
-    /**
-     * 
-     * @param {BaseTextElement} master
-     * @param {string} cls
-     */
     constructor(master, cls) {
         this.master = master;
         this.cls = cls;

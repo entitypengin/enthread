@@ -1,8 +1,7 @@
 "use strict";
 
 import {
-    BaseTextElement,
-    TextData
+    BaseText
 } from "./text.js";
 import {
     ThreadIDError,
@@ -31,8 +30,27 @@ const textsData = {
     }
 };
 
+class IndexedText extends BaseText {
+    #elementIndex;
 
-class PreviewTextElement extends BaseTextElement {
+    constructor(id) {
+        super(id);
+
+        this.child("id").prepend("<a class='text-id text-id-index'></a>: ");
+        this.child("text-id-index").attr("href", `#${this.id}`);
+    }
+
+    get elementIndex() {
+        return this.#elementIndex;
+    }
+
+    set elementIndex(value) {
+        this.#elementIndex = value;
+        this.child("text-id-index").text(value);
+    }
+}
+
+class PreviewText extends IndexedText {
     buttonsTextData = textsData.buttons.preview;
 
     constructor(id) {
@@ -45,11 +63,11 @@ class PreviewTextElement extends BaseTextElement {
     }
 
     get sendable() {
-        return !!(this.textData.message || this.textData.files.length);
+        return !!(this.message || this.files.length);
     }
 
     init(anonymous) {
-        super.init(new TextData({}));
+        super.init({});
 
         this.elementHost = null;
         this.child("input-author").attr("placeholder", anonymous);
@@ -65,7 +83,7 @@ class PreviewTextElement extends BaseTextElement {
                 const reader = new FileReader();
                 promises.push(new Promise((resolve, reject) => {
                     reader.onload = e => {
-                        this.textData.files.push(e.currentTarget.result);
+                        this.files.push(e.currentTarget.result);
                         this.elementFiles = null;
                         resolve();
                     };
@@ -83,11 +101,19 @@ class PreviewTextElement extends BaseTextElement {
     }
 
     update() {
-        this.textData.author = this.child("input-author").val();
-        this.textData.message = this.child("input-message").val();
+        this.author = this.child("input-author").val();
+        this.message = this.child("input-message").val();
         this.elementMessage = null;
-        this.textData.timestamp = Date.now();
+        this.timestamp = Date.now();
         this.elementTime = null;
+    }
+
+    get elementIndex() {
+        return super.elementIndex;
+    }
+
+    set elementIndex(value) {
+        super.elementIndex = value ?? `#${texts.length}`;
     }
 
     async send() {
@@ -106,14 +132,14 @@ class PreviewTextElement extends BaseTextElement {
         }, 1_000);
         this.update();
 
-        await sendText(threadId, this.textData.data);
+        await sendText(threadId, this.data);
 
         this.child("input-message").val("");
         this.clearFiles();
     }
 
     clearFiles() {
-        this.textData.files.splice(0);
+        this.files.splice(0);
         this.elementFiles = null;
     }
 
@@ -130,21 +156,26 @@ class PreviewTextElement extends BaseTextElement {
     }
 }
 
-class TextElement extends BaseTextElement {
+class Text extends IndexedText {
     buttonsTextData = textsData.buttons.text;
 
+    index;
     hiding;
 
-    /**
-     * 
-     * @param {number} index
-     */
     constructor(index) {
         super(`x${index}`);
 
-        this.textData.index = index;
+        this.index = index;
 
         this.elementIndex = null;
+    }
+
+    get isLong() {
+        return this.message.length >= 200;
+    }
+
+    get hasFiles() {
+        return this.files.length != 0;
     }
 
     init(data) {
@@ -155,13 +186,13 @@ class TextElement extends BaseTextElement {
         this.elementHost = null;
         this.elementTime = null;
 
-        this.newButton("reply", false, this.buttonsTextData.reply, () => previewText.reply(this.textData.index));
+        this.newButton("reply", false, this.buttonsTextData.reply, () => previewText.reply(this.index));
 
-        if (this.textData.isLong || this.textData.hasFiles) {
+        if (this.isLong || this.hasFiles) {
             this.newButton("show", true, "", () => this.toggleHiding());
             this.toggleHiding();
         }
-        if (!this.textData.isLong) {
+        if (!this.isLong) {
             this.elementMessage = null;
             this.elementRawMessage = null;
         }
@@ -172,35 +203,43 @@ class TextElement extends BaseTextElement {
 
         if (this.hiding) {
             this.buttons["show"].value = this.buttonsTextData.show;
-            if (this.textData.isLong) {
+            if (this.isLong) {
                 this.elementMessage = "";
                 this.elementRawMessage = "";
             }
-            if (this.textData.hasFiles) {
+            if (this.hasFiles) {
                 this.elementFiles = [];
             }
         } else {
             this.buttons["show"].value = this.buttonsTextData.hide;
-            if (this.textData.isLong) {
+            if (this.isLong) {
                 this.elementMessage = null;
                 this.elementRawMessage = null;
             }
-            if (this.textData.hasFiles) {
+            if (this.hasFiles) {
                 this.elementFiles = null;
             }
         }
+    }
+
+    get elementIndex() {
+        return super.elementIndex;
+    }
+
+    set elementIndex(value) {
+        super.elementIndex = value ?? `#${this.index}`;
     }
 }
 
 /**
  * 
- * @returns {TextElement}
+ * @returns {Text}
  */
 function newText() {
     const index = texts.length;
     $("#texts").prepend(`<div id="x${index}"></div>`);
 
-    const text = new TextElement(index);
+    const text = new Text(index);
     texts.push(text);
 
     return text;
@@ -209,7 +248,7 @@ function newText() {
 /**
  * 
  * @param {string} key
- * @returns {Promise<TextElement>}
+ * @returns {Promise<Text>}
  */
 async function setText(key) {
     const data = await getText(key);
@@ -220,7 +259,7 @@ async function setText(key) {
 
     text.init(data);
 
-    previewText.elementIndex = texts.length;
+    previewText.elementIndex = null;
 
     return text;
 }
@@ -235,11 +274,11 @@ if (skin !== null) {
 const threadId = searchParams.get("t");
 
 /** 
- * @type {TextElement[]}
+ * @type {Text[]}
  */
 const texts = [];
 
-const previewText = new PreviewTextElement("send");
+const previewText = new PreviewText("send");
 
 try {
     var { name, anonymous, cooldown, texts: textKeys } = await getThread(threadId);
