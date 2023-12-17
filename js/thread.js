@@ -1,7 +1,8 @@
 "use strict";
 
 import {
-    BaseTextElement
+    BaseTextElement,
+    TextData
 } from "./text.js";
 import {
     ThreadIDError,
@@ -48,7 +49,7 @@ class PreviewTextElement extends BaseTextElement {
     }
 
     init(anonymous) {
-        super.init({});
+        super.init(new TextData());
 
         this.elementHost = null;
         this.child("input-author").attr("placeholder", anonymous);
