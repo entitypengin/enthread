@@ -12,7 +12,7 @@ import {
     ref,
     update
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-import { TextData } from "./text";
+import { TextData } from "./text.js";
 
 /**
  * @typedef ThreadObject
