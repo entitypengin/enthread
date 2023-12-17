@@ -49,7 +49,7 @@ class PreviewTextElement extends BaseTextElement {
     }
 
     init(anonymous) {
-        super.init(new TextData());
+        super.init(new TextData({}));
 
         this.elementHost = null;
         this.child("input-author").attr("placeholder", anonymous);
