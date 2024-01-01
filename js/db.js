@@ -114,20 +114,6 @@ export async function sendText(id, {author, message, host, timestamp, files}) {
     await update(ref(database), updates);
 }
 
-/**
- * 
- * @param {string} id
- * @returns {Promise<ProxyLinkObject[]>}
- */
-export async function getProxyLinks() {
-    const links = (await get(ref(database, "proxylinks"))).val();
-    const result = [];
-    for (const link in links) {
-        result.push(links[link]);
-    }
-    return result;
-}
-
 const app = initializeApp({
     databaseURL: "https://enthread-firebase-default-rtdb.firebaseio.com/"
 });
