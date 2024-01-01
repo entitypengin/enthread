@@ -122,7 +122,7 @@ export async function sendText(id, {author, message, host, timestamp, files}) {
 export async function getProxyLinks() {
     const links = (await get(ref(database, "proxylinks"))).val();
     const result = [];
-    for (const link of links) {
+    for (const link in links) {
         result.push(link);
     }
     return result;
