@@ -2,7 +2,9 @@
 
 import {
     escapeToHTML,
-    formatTime
+    formatTime,
+    replaceLink,
+    replaceStyle
 } from "./functions.js";
 
 export class BaseText {
@@ -207,14 +209,6 @@ export class Button {
     }
 }
 
-function replaceLink(message) {
-    return message.replace(/(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&\/=]*/g, str => /^https?:\/\//.test(str) ? `<a href="${str}">${str}</a>` : `<a href="https://${str}">${str}</a>`);
-}
-
 function replaceAnchor(message) {
     return message.replace(/#(\d+)/g, "<a href='#x$1' class='text-id'>$&</a>");
-}
-
-function replaceStyle(message) {
-    return message.replace(/!([^!]+?){(.+?)}/g, "<span style='$1'>$2</span>");
 }

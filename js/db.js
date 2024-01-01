@@ -30,6 +30,19 @@ import {
  * @property {string[]} files
  */
 
+/**
+ * @typedef ProxyLinkObject
+ * @property {string} link
+ * @property {ProxyStatusObject} status
+ * @property {string} description
+ */
+
+/**
+ * @typedef ProxyStatusObject
+ * @property {boolean} blocked
+ * @property {boolean} working
+ */
+
 export class ThreadIDError extends Error {}
 
 /**
@@ -99,6 +112,16 @@ export async function sendText(id, {author, message, host, timestamp, files}) {
     }
 
     await update(ref(database), updates);
+}
+
+/**
+ * 
+ * @param {string} id
+ * @returns {Promise<ProxyLinkObject[]>}
+ */
+export async function getProxyLinks() {
+    const snapshot = await get(ref(database, "proxylinks"));
+    return snapshot.val();
 }
 
 const app = initializeApp({
