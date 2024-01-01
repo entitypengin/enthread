@@ -123,7 +123,7 @@ export async function getProxyLinks() {
     const links = (await get(ref(database, "proxylinks"))).val();
     const result = [];
     for (const link in links) {
-        result.push(link);
+        result.push(links[link]);
     }
     return result;
 }
