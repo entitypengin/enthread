@@ -120,8 +120,12 @@ export async function sendText(id, {author, message, host, timestamp, files}) {
  * @returns {Promise<ProxyLinkObject[]>}
  */
 export async function getProxyLinks() {
-    const snapshot = await get(ref(database, "proxylinks"));
-    return snapshot.val();
+    const links = (await get(ref(database, "proxylinks"))).val();
+    const result = [];
+    for (const link of links) {
+        result.push(link);
+    }
+    return result;
 }
 
 const app = initializeApp({
