@@ -93,8 +93,12 @@ export class Link {
     }
 }
 
-var linkObjects = await getProxyLinks();
+const linkObjects = await getProxyLinks();
 
+var count = 0;
+var id;
 for (const linkObject of linkObjects) {
-    new Link().init({link: linkObject.link, blocked: linkObject.status.blocked, working: linkObject.status.working, description: linkObject.description});
+    id = `link-${count++}`;
+    $("#contents").prepend(`<div id="${id}"></div>`);
+    new Link(id).init({link: linkObject.link, blocked: linkObject.status.blocked, working: linkObject.status.working, description: linkObject.description});
 }
